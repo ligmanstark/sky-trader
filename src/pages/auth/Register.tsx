@@ -168,6 +168,9 @@ const Form = styled.form`
 	padding: 2rem 2.6rem 3rem;
 	width: 22.875rem;
 	box-shadow: 0 0.25reexport default MainPage;
+	html {
+		background-color: #f5f5f5;
+	}
 `;
 
 const Logo = styled.div`

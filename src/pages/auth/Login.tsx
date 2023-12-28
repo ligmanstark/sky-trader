@@ -25,13 +25,9 @@ type TSignUp = {
 	city?: string;
 };
 
-
 const LoginPage = () => {
-if (typeof window !== 'undefined')
-	return (
-		<Login/>
-	)
-}
+	if (typeof window !== 'undefined') return <Login />;
+};
 
 const Login: FC = () => {
 	const [postToken] = useSetLoginUserMutation();
@@ -89,7 +85,6 @@ const Login: FC = () => {
 			);
 		}, 1500);
 	};
- 
 
 	return (
 		<Wrapper>
@@ -154,6 +149,9 @@ const Form = styled.form`
 	padding: 2rem 2.6rem 3rem;
 	width: 22.875rem;
 	box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+	html {
+		background-color: #f5f5f5;
+	}
 `;
 const Buttons = styled.div`
 	display: grid;

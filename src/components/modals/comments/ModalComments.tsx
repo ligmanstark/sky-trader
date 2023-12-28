@@ -40,7 +40,7 @@ export const ModalComments: FC = () => {
 		await postComment({
 			id: idCurrentState,
 			accessToken: accessToken as string,
-			body: textRef.current.value,
+			body: { text: textRef.current.value },
 		})
 			.unwrap()
 			.then((POST: TComments) => {
@@ -98,7 +98,8 @@ export const ModalComments: FC = () => {
 				<S.Content>
 					{comments
 						? comments.map((comment) => (
-								<ItemComments key={comment.id} {...comment} /> ))
+								<ItemComments key={comment.id} {...comment} />
+						  ))
 						: ''}
 				</S.Content>
 			</div>
