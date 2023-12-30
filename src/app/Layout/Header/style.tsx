@@ -1,7 +1,7 @@
 'use client'
 import styled from '@emotion/styled';
 import { Container } from '../../../styled/components';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 
 export const Wrapper = styled.header`
 	background: transparent;

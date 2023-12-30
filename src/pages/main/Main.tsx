@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { FC } from 'react';
 import styled from '@emotion/styled';
 
@@ -14,17 +14,20 @@ import {
 	useLazyGetByIdGoodQuery,
 } from '../../store/service/goodsService';
 import { Logomini } from '../../assets/img/index';
- import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { GoodsList } from '../../components/goodsList/GoodsList';
 import { searchID } from '../../components/helpers/searchID';
 
+ 
 const MainPage = () => {
 	if (typeof window !== 'undefined')
-
-	return (
-		<Main/>
-	)
-}
+		return (
+			<>
+ 
+				<Main />
+ 			</>
+		);
+};
 
 const Main: FC = () => {
 	const dispatch = useDispatch();
@@ -56,10 +59,10 @@ const Main: FC = () => {
 
 	return (
 		<>
-			<HelmetHead
+			{/* <HelmetHead
 				title={`Авито на свой лад`}
 				descr={`Заработай свой первый рубль!`}
-			/>
+			/> */}
 			<SMain>
 				<Container>
 					<SearchBox>
@@ -85,27 +88,25 @@ const Main: FC = () => {
 	);
 };
 
-
-
-  const SMain = styled.div`
+const SMain = styled.div`
 	background-color: #f5f5f5;
 	padding-bottom: 3.75rem;
 	position: relative;
 `;
-  const SearchBox = styled.div`
+const SearchBox = styled.div`
 	display: flex;
 	flex-direction: row;
 	gap: 1rem;
 	flex-wrap: nowrap;
 	align-items: center;
 `;
-  const TitleBlock = styled.div`
+const TitleBlock = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 `;
 
-  const TitleBlockH1 = styled.h1`
+const TitleBlockH1 = styled.h1`
 	color: black;
 	font-variant-numeric: lining-nums proportional-nums;
 	font-size: 2.5rem;
@@ -115,7 +116,7 @@ const Main: FC = () => {
 	max-width: 51rem;
 `;
 
-  const ScrollUpBtn = styled.button`
+const ScrollUpBtn = styled.button`
 	cursor: pointer;
 	padding: 0.4375rem 1.5rem 0.5625rem 1.5rem;
 	margin: 0 auto;

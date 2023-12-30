@@ -1,18 +1,19 @@
 'use client'
 import { FC, useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+  import Link from 'next/link';
 import { MAIN_ROUTE,PROFILE_ROUTE_ME } from '../../../utils/consts';
 import { Button } from '../../../components/form/Button';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
+import { usePathname } from 'next/navigation';
 import * as S from './style';
 export const Header: FC = () => {
-	const Auth = useSelector(
+ 	const Auth = useSelector(
 		(state: RootState) => state.userReducer.access_token
 	);
 
 	const [auth, setAuth] = useState(false);
-	const { pathname } = useLocation();
+	const  pathname  = usePathname();
 
 	useEffect(() => {
 		if (Auth !== '') {
@@ -33,9 +34,9 @@ export const Header: FC = () => {
 					}}
 				>
 					<S.MyContainer>
-						<S.Img to={MAIN_ROUTE}></S.Img>
+						<S.Img href={MAIN_ROUTE}></S.Img>
 						{!isAuth ? (
-							<Link to="/login">
+							<Link href="/login">
 								<Button style={{ margin: '1rem' }} $color $border>
 									Вход в личный кабинет
 								</Button>
@@ -45,7 +46,7 @@ export const Header: FC = () => {
 								<Button style={{ margin: '1rem' }} $color $border>
 									Разместить объявление
 								</Button>
-								<Link to={PROFILE_ROUTE_ME}>
+								<Link href={PROFILE_ROUTE_ME}>
 									<Button style={{ margin: '1rem' }} $color $border>
 										Личный кабинет
 									</Button>

@@ -3,7 +3,7 @@ import * as S from './style';
 import { TGoods } from '../../../store/service/types/TGoods';
 import { Button } from '../../form/Button';
 import { BASE_URL } from '../../../utils/consts';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 import { ModalControl } from '../../modals/ModalControl';
 import { ModalComments } from '../../modals/comments/ModalComments';
 import { useSelector, useDispatch } from 'react-redux';
@@ -83,7 +83,7 @@ export const ArticleInfo: FC<TGoods> = (props) => {
 					<S.SellerImg src={`${BASE_URL}/${user.avatar}`} />
 					<S.SubSellerBox>
 						<Link
-							to={`/profile/${user.id}`}
+							href={`/profile/${user.id}`}
 							style={{
 								textDecoration: 'none',
 							}}

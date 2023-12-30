@@ -1,6 +1,6 @@
 'use client'
 import { FC, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 import * as S from './style';
 import { BASE_URL } from '../../../utils/consts';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,7 +11,7 @@ import { InputPlaceBlack } from '../../form/Input';
 import { InputField } from '../../form/InputField';
 import { ModalControl } from '../../modals/ModalControl';
 // import { ModalUploadAvatar } from '../../modals/uploadAvatar/ModalUploadAvatar';
-import { ModalUploadAvatar2  } from '../../modals/uploadAvatar/ModalUploadAvatar2';
+import { ModalUploadAvatar2  } from '../../modals/uploadAvatar/ModalUploadAvatar';
 
 import {
 	useUpdateUserMutation,
@@ -114,12 +114,13 @@ export const YourSellerInfo: FC = () => {
 									});
 							})
 							.catch(() => {
-								<Link to="/login"></Link>;
+								<Link href="/login"></Link>;
 							});
 					}
 				});
 		}
 	};
+	console.log(avatar);
 	return (
 		<S.Wrapper>
 			<S.Box>

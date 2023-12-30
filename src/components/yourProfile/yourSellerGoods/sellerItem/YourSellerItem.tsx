@@ -2,7 +2,7 @@ import { FC } from 'react';
 import * as T from './types/index';
 import { BASE_URL } from '../../../../utils/consts';
 import * as S from './style';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 
 export const YourSellerItem: FC<T.TGoods> = (props) => {
 	const { title, id, images, price, user, created_on } = props;
@@ -15,7 +15,7 @@ export const YourSellerItem: FC<T.TGoods> = (props) => {
 
 	return (
 		<Link
-			to={`/goods/${id}`}
+			href={`/goods/${id}`}
 			className="btn"
 			style={{
 				textDecoration: 'none',

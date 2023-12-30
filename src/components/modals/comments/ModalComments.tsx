@@ -14,7 +14,7 @@ import {
 	useSetRefreshTokenMutation,
 } from '../../../store/service/goodsService';
 import { addComments } from '../../../store/slices/commentsSlice';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 export const ModalComments: FC = () => {
 	const textRef = useRef() as MutableRefObject<HTMLTextAreaElement>;
 	const dispatch = useDispatch();
@@ -61,7 +61,7 @@ export const ModalComments: FC = () => {
 							localStorage.setItem('token', newToken.access_token);
 						})
 						.catch(() => {
-							<Link to="/login"></Link>;
+							<Link href="/login"></Link>;
 						});
 				}
 			});
