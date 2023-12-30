@@ -20,8 +20,7 @@ export const ImageShow: FC<TGoods> = (props) => {
 								/>
 							))
 						) : (
-							<ImageNoIcon />
-						)}
+''						)}
 					</S.SmallBox>
 				</>
 			) : (

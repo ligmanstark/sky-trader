@@ -46,6 +46,7 @@ export const ModalComments: FC = () => {
 			.then((POST: TComments) => {
 				dispatch(addComments(POST));
 				console.log(textRef.current.value);
+				textRef.current.value = '';
 			})
 			.catch(async (error) => {
 				if (error.status === 401) {
