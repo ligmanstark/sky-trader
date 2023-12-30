@@ -1,7 +1,6 @@
 'use client';
 import { FC } from 'react';
-import { setCookie } from 'cookies-next';
- import { InputField } from '../../components/form/InputField';
+  import { InputField } from '../../components/form/InputField';
 import { Input } from '../../components/form/Input';
 import { Button } from '../../components/form/Button';
 import { useForm } from 'react-hook-form';
@@ -75,10 +74,10 @@ const Login: FC = () => {
 								city: login.city,
 								phone: login.phone,
 								id: login.id,
+								avatar:login.avatar
 							})
 						);
-setCookie('logged','true')
-					});
+ 					});
 			});
 
 		setTimeout(() => {

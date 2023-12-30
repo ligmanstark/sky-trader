@@ -134,8 +134,7 @@ export const goodsApi = createApi({
 					method: 'POST',
 					body: formData,
 					headers: {
-						'content-type': 'application/json',
-						Authorization: `Bearer ${accessToken}`,
+ 						Authorization: `Bearer ${accessToken}`,
 					},
 				}
 			}

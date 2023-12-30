@@ -120,6 +120,7 @@ export const YourSellerInfo: FC = () => {
 				});
 		}
 	};
+	console.log(avatar);
 	return (
 		<S.Wrapper>
 			<S.Box>
