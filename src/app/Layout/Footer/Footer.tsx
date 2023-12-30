@@ -3,9 +3,10 @@ import styled from '@emotion/styled';
 import { FC } from 'react';
 import { Container } from '../../../styled/components';
 import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { BackUp } from '../../../assets/img/index';
 export const Footer: FC = () => {
-	const { pathname } = useLocation();
+	const  pathname  = usePathname();
 	const scrollPageUp = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		window.scrollTo({

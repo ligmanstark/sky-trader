@@ -1,5 +1,6 @@
 'use client';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
+import { setCookie } from 'cookies-next';
 import { InputField } from '../../components/form/InputField';
 import { Input } from '../../components/form/Input';
 import { Button } from '../../components/form/Button';
@@ -75,6 +76,7 @@ const Login: FC = () => {
 								id: login.id,
 							})
 						);
+						setCookie('loggged','true')
 					});
 			});
 

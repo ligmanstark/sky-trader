@@ -1,9 +1,9 @@
 import ReduxProvider from '@/store/Provider';
-
-import type { Metadata } from 'next';
+ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import {Header  } from './Layout/Header/Header';
-  const inter = Inter({ subsets: ['latin'] });
+import { Header } from './Layout/Header/Header';
+import { Footer } from './Layout/Footer/Footer';
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
 	title: 'Sky Trader',
@@ -20,10 +20,12 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<ReduxProvider>
 					<>
-					<Header/>
-
+						<Header />
 					</>
 					{children}
+					<>
+						<Footer />
+					</>
 				</ReduxProvider>
 			</body>
 		</html>
