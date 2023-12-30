@@ -1,5 +1,5 @@
 import { FC, useRef } from 'react';
-import  Link  from 'next/link';
+import Link from 'next/link';
 import * as S from './style';
 import { InputField } from '../../form/InputField';
 import { Input } from '../../form/Input';
@@ -12,8 +12,8 @@ import {
 } from '../../../store/service/goodsService';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { setAccessToken } from '../../../store/slices/userSlice';
-export const ModalUploadAvatar: FC = () => {
+import { setAccessToken, setUser } from '../../../store/slices/userSlice';
+export const ModalUploadAvatar2: FC = () => {
 	const avatarRef = useRef<HTMLInputElement | null>(null);
 	const dispatch = useDispatch();
 	const token = useSelector(
@@ -29,22 +29,18 @@ export const ModalUploadAvatar: FC = () => {
 	const { close } = useModal('uploadAvatar');
 	const [updateAvatar] = useUpdateUserAvatarMutation();
 	const [putRefreshToken] = useSetRefreshTokenMutation();
+
 	const handleUpload = (event: any) => {
-		const files = event.target.files[0];
+		const files = event.target.files ? event.target.files[0] : null;
 		console.log(event.target.files);
-		// const formdata = new FormData();
-		// formdata.append('myAvatar', files[0]);
 
 		const reader = new FileReader();
 		reader.readAsDataURL(files);
-console.log(reader);
-		updateAvatar({
-			accessToken: token as string,
-			credent: files,
-		})
+		updateAvatar({ credent: files, accessToken: token as string })
 			.unwrap()
 			.then((response) => {
-				console.log(response);
+				dispatch(setUser({ avatar: response.avatar }));
+				close();
 			})
 			.catch((error) => {
 				if (error.status === 401) {

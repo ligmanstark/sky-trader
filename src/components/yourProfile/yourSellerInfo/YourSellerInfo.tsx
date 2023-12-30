@@ -11,7 +11,7 @@ import { InputPlaceBlack } from '../../form/Input';
 import { InputField } from '../../form/InputField';
 import { ModalControl } from '../../modals/ModalControl';
 // import { ModalUploadAvatar } from '../../modals/uploadAvatar/ModalUploadAvatar';
-import { ModalUploadAvatar2  } from '../../modals/uploadAvatar/ModalUploadAvatar2';
+import { ModalUploadAvatar2  } from '../../modals/uploadAvatar/ModalUploadAvatar';
 
 import {
 	useUpdateUserMutation,
