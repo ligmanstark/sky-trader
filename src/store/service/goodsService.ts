@@ -123,7 +123,11 @@ export const goodsApi = createApi({
 			query: ({credent,accessToken}) => {
 				const formData = new FormData()
 				if (credent) {
-					formData.append('file',credent)
+					formData.append('file', credent)
+					console.log('then=',credent);
+				} else {
+					console.log('error=',credent);
+
 				}
 				return {
 					url: '/user/avatar/',

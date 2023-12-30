@@ -23,67 +23,37 @@ export const GoodsItem: FC<T.TGoods> = (props) => {
 
 	return (
 		<>
-			{localStorage.getItem('token') === '' ? (
-				<Link
-					href={`/`}
-					className="btn"
-					style={{
-						textDecoration: 'none',
-					}}
-					replace={true}
-				>
-					<S.Wrapper key={id}>
-						<div>
-							{images[0] && images[0].url ? (
-								<S.Image src={`${BASE_URL}/${images[0].url}`} />
-							) : (
-								<ImageNoIcon />
-							)}
-						</div>
-						<S.CardInfo>
-							<S.Title>{title}</S.Title>
-							<S.Description>
-								{description ? description : 'Описание отсутствует'}
-							</S.Description>
-							<div>{`${price}₽`}</div>
-							<S.UserInfo>
-								<div>{`${user.name} из ${user.city}`}</div>
-								<div>{`Создано: ${newDate}`}</div>
-							</S.UserInfo>
-						</S.CardInfo>
-					</S.Wrapper>
-				</Link>
-			) : (
-				<Link
-					href={`/goods/${id}`}
-					className="btn"
-					style={{
-						textDecoration: 'none',
-					}}
-					replace={true}
-				>
-					<S.Wrapper key={id}>
-						<div>
-							{images[0] && images[0].url ? (
-								<S.Image src={`${BASE_URL}/${images[0].url}`} />
-							) : (
-								<ImageNoIcon />
-							)}
-						</div>
-						<S.CardInfo>
-							<S.Title>{title}</S.Title>
-							<S.Description>
-								{description ? description : 'Описание отсутствует'}
-							</S.Description>
-							<div>{`${price}₽`}</div>
-							<S.UserInfo>
-								<div>{`${user.name} из ${user.city}`}</div>
-								<div>{`Создано: ${newDate}`}</div>
-							</S.UserInfo>
-						</S.CardInfo>
-					</S.Wrapper>
-				</Link>
-			)}
+			
+			<Link
+				href={`/goods/${id}`}
+				className="btn"
+				style={{
+					textDecoration: 'none',
+				}}
+				replace={true}
+			>
+				<S.Wrapper key={id}>
+					<div>
+						{images[0] && images[0].url ? (
+							<S.Image src={`${BASE_URL}/${images[0].url}`} />
+						) : (
+							<ImageNoIcon />
+						)}
+					</div>
+					<S.CardInfo>
+						<S.Title>{title}</S.Title>
+						<S.Description>
+							{description ? description : 'Описание отсутствует'}
+						</S.Description>
+						<div>{`${price}₽`}</div>
+						<S.UserInfo>
+							<div>{`${user.name} из ${user.city}`}</div>
+							<div>{`Создано: ${newDate}`}</div>
+						</S.UserInfo>
+					</S.CardInfo>
+				</S.Wrapper>
+			</Link>
+			
 		</>
 	);
 };

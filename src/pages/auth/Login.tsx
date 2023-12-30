@@ -1,7 +1,7 @@
 'use client';
 import { FC } from 'react';
 import { setCookie } from 'cookies-next';
-import { InputField } from '../../components/form/InputField';
+ import { InputField } from '../../components/form/InputField';
 import { Input } from '../../components/form/Input';
 import { Button } from '../../components/form/Button';
 import { useForm } from 'react-hook-form';
@@ -65,7 +65,8 @@ const Login: FC = () => {
 
 				postLogin({ accessToken: token.access_token })
 					.unwrap()
-					.then((login) => {
+					.then((login:any) => {
+ 
 						dispatch(
 							setUser({
 								email: login.email,
@@ -76,7 +77,7 @@ const Login: FC = () => {
 								id: login.id,
 							})
 						);
-						setCookie('loggged','true')
+setCookie('logged','true')
 					});
 			});
 

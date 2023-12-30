@@ -1,14 +1,18 @@
 'use client';
 import { GlobalStyles } from '../styled/GlobalStyles';
+import { Header } from './Layout/Header/Header';
+import { Footer } from './Layout/Footer/Footer';
 import Main from '../pages/main/Main';
-import Application from './Application';
 export default function Home() {
 	if (typeof window !== 'undefined')
 		return (
 			<div>
 				<GlobalStyles />
-				{/* <Application /> */}
-				<Main/>
+				<>
+					<Header />
+					<Main />
+					<Footer />
+				</>
 			</div>
 		);
 }
