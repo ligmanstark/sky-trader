@@ -1,5 +1,5 @@
 import { FC, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 import * as S from './style';
 import { InputField } from '../../form/InputField';
 import { Input } from '../../form/Input';
@@ -55,7 +55,7 @@ export const ModalUploadAvatar2: FC = () => {
 							localStorage.setItem('token', newToken.access_token);
 						})
 						.catch(() => {
-							<Link to="/login"></Link>;
+							<Link href="/login"></Link>;
 						});
 				}
 			});

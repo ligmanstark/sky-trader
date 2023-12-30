@@ -4,7 +4,8 @@ import * as S from './style';
 import { ImageShow } from './imageShow/ImageShow';
 import { DescriptionShow } from './descriptionShow/DescriptionShow';
 import { ArticleInfo } from './articleInfo/ArticleInfo';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import { useLazyGetByIdGoodQuery } from '../../store/service/goodsService';
 import { TGoods } from '../../store/service/types/TGoods';
 import { useDispatch } from 'react-redux';
@@ -15,11 +16,11 @@ import {
 export const CardComponents: FC = () => {
 	const dispatch = useDispatch();
 	const [currentState, setCurrentState] = useState<TGoods>();
-	console.log(currentState);
-	const { id } = useParams();
+ 	const  id  = useParams();
 	const [fetchSearch] = useLazyGetByIdGoodQuery();
 	console.log(id);
 	useEffect(() => {
+		if (typeof id !==undefined)
 		fetchSearch(Number(id))
 			.unwrap()
 			.then((data) => {
@@ -28,7 +29,7 @@ export const CardComponents: FC = () => {
 				dispatch(setCurrentIDStateDate(data.id));
 			})
 			.catch((err) => alert(err));
-	}, [id]);
+	}, [dispatch, fetchSearch, id]);
 	return (
 		<S.Wrapper>
 			<S.SubWrapper>

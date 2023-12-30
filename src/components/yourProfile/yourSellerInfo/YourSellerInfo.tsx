@@ -1,6 +1,6 @@
 'use client'
 import { FC, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 import * as S from './style';
 import { BASE_URL } from '../../../utils/consts';
 import { useSelector, useDispatch } from 'react-redux';
@@ -114,7 +114,7 @@ export const YourSellerInfo: FC = () => {
 									});
 							})
 							.catch(() => {
-								<Link to="/login"></Link>;
+								<Link href="/login"></Link>;
 							});
 					}
 				});

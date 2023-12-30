@@ -4,7 +4,9 @@ import { InputField } from '../../components/form/InputField';
 import { Input } from '../../components/form/Input';
 import { Button } from '../../components/form/Button';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
 import styled from '@emotion/styled';
 import { LogoPic } from '../../assets/img/index';
 import { MAIN_ROUTE } from '../../utils/consts';
@@ -33,8 +35,7 @@ const Login: FC = () => {
 	const [postToken] = useSetLoginUserMutation();
 	const [postLogin] = useLazyGetUserQuery();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-
+	const router = useRouter();
 	const getToken = useSelector(
 		(state: RootState) => state.userReducer.access_token
 	);
@@ -76,13 +77,11 @@ const Login: FC = () => {
 						);
 					});
 			});
+
 		setTimeout(() => {
 			localStorage.setItem('token', getToken as string);
 
-			navigate(
-				MAIN_ROUTE
-				// { replace: true }
-			);
+			router.push(MAIN_ROUTE, { scroll: false });
 		}, 1500);
 	};
 
@@ -130,7 +129,7 @@ const Login: FC = () => {
 					<Button type="submit" $color>
 						Войти
 					</Button>
-					<Link to={'/register'}>
+					<Link href={'/register'}>
 						<Button type="submit">Регистрация</Button>
 					</Link>
 				</Buttons>
