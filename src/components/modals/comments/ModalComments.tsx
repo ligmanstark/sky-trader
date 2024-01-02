@@ -48,17 +48,28 @@ export const ModalComments: FC = () => {
 				console.log(textRef.current.value);
 				textRef.current.value = '';
 			})
-			.catch(async (error) => {
+			.catch(async (error:any) => {
 				if (error.status === 401) {
 					await putRefreshToken({
 						access_token: accessToken as string,
 						refresh_token: refreshToken as string,
 					})
 						.unwrap()
-						.then((newToken) => {
+						.then((newToken:any) => {
 							console.log('token upload');
 							dispatch(setAccessToken(newToken));
 							localStorage.setItem('token', newToken.access_token);
+							postComment({
+								id: idCurrentState,
+								accessToken: accessToken as string,
+								body: { text: textRef.current.value },
+							})
+								.unwrap()
+								.then((POST: TComments) => {
+									dispatch(addComments(POST));
+									console.log(textRef.current.value);
+									textRef.current.value = '';
+								})
 						})
 						.catch(() => {
 							<Link href="/login"></Link>;

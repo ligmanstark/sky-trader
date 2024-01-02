@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import * as T from './types/index';
+import { createQueryString } from '../../components/helpers/api';
 import { BASE_URL } from '../../utils/consts';
  
- 
+ type TFields = Record<string, string | number>;
 export const goodsApi = createApi({
 	reducerPath: 'goodsApi',
 	tagTypes: ['Users', 'Goods'],
@@ -175,6 +176,53 @@ export const goodsApi = createApi({
 
 			})
 		}),
+		postAdsWithImg: builder.mutation<T.TGoods, {files:File|null,fields:{title:string,description:string,price:number},accessToken:string}>({
+			query: ({ files,fields, accessToken }) => {
+				
+				const formData = new FormData()
+				if(files)
+				formData.append('file', files)
+				const queryString = createQueryString(fields);
+				return {
+					url: `/ads/?${queryString}`,
+					method: 'POST',
+					body: {fields,files},
+					headers: {
+ 						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			}
+		}),
+		postAdsWithoutImg: builder.mutation<T.TGoods, { body: { title: string, description: string, price: number}, accessToken: string }>({
+			query: ({ body, accessToken }) => {
+  				return {
+					url: '/adstext',
+					method: 'POST',
+					body: body,
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				
+				}
+				// ({
+				// 	url: '/adstext',
+				// 	method: 'POST',
+				// 	body: body,
+				// 	headers: {
+				// 		Authorization: `Bearer ${accessToken}`,
+				//    },
+				// })
+			}
+		}),
+		deleteADS: builder.mutation<void, { id: number, accessToken: string }>({
+			query: ({id,accessToken}) => ({
+				url: `/ads/${id}`,
+				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			})
+		})
 
 	}),
 });
@@ -195,4 +243,7 @@ export const {
 	useLazyGetUserQuery,
 	useLazyGetAllCommentsQuery,
 	usePostCommentMutation,
+	usePostAdsWithImgMutation,
+	usePostAdsWithoutImgMutation,
+	useDeleteADSMutation
 } = goodsApi;

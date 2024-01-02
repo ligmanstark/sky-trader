@@ -33,6 +33,9 @@ const goodsSlice = createSlice({
 		setCurrentIDStateDate(state, action) {
 			state.idCurrentState = action.payload;
 		},
+		AddGoods(state, action) {
+			state.data.push(action.payload);
+		},
 	},
 });
 export const {
@@ -41,6 +44,7 @@ export const {
 	setSearchGood,
 	setCurrentStateDate,
 	setCurrentIDStateDate,
+	AddGoods,
 } = goodsSlice.actions;
 
 export default goodsSlice.reducer;

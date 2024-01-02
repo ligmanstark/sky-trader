@@ -621,3 +621,17 @@ export const ImageNoIcon: FC = () => (
 		/>
 	</svg>
 );
+
+export const AddImage: FC = () => (
+	<svg
+		width="90"
+		height="90"
+		viewBox="0 0 90 90"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<rect width="90" height="90" fill="#F0F0F0" />
+		<path d="M45 30V60" stroke="#D9D9D9" stroke-width="3" />
+		<path d="M60 45H30" stroke="#D9D9D9" stroke-width="3" />
+	</svg>
+);
