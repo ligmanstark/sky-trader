@@ -5,6 +5,7 @@ const initialState: T.TGoodsState = {
 	data: [],
 	searchData: [],
 	searchRef: '',
+	//@ts-ignore
 	currentState: [],
 	idCurrentState: 0,
 };

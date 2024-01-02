@@ -3,10 +3,8 @@ import { FC } from 'react';
 import styled from '@emotion/styled';
 
 import { Container } from '../../styled/components';
-import { HelmetHead } from '../../components/HelmetHead';
-import { Search } from '../../components/search/Search';
-// import { Loader } from '../../components/plug/Loader';
-import { useDispatch, useSelector } from 'react-redux';
+ import { Search } from '../../components/search/Search';
+ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setGoods, setSearchGood } from '../../store/slices/goodsSlice';
 import {
@@ -39,7 +37,7 @@ const Main: FC = () => {
 
 	useEffect(() => {
 		dispatch(setGoods(data));
-	}, [isLoading]);
+	}, [data, dispatch, isLoading]);
 
 	const fetchGood = () => {
 		if (searchRef !== '') {

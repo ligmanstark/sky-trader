@@ -222,6 +222,16 @@ export const goodsApi = createApi({
 					Authorization: `Bearer ${accessToken}`,
 				},
 			})
+		}),
+		updateADS: builder.mutation<T.TGoods, {body:{title:string,description:string,price:number}, id: number, accessToken: string }>({
+			query: ({id,body,accessToken}) => ({
+				url: `/ads/${id}`,
+				method: 'PATCH',
+				body,
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			})
 		})
 
 	}),
@@ -245,5 +255,6 @@ export const {
 	usePostCommentMutation,
 	usePostAdsWithImgMutation,
 	usePostAdsWithoutImgMutation,
-	useDeleteADSMutation
+	useDeleteADSMutation,
+	useUpdateADSMutation
 } = goodsApi;

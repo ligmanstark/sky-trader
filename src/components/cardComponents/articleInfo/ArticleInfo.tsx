@@ -16,7 +16,7 @@ import {
 	useLazyGetAllGoodsQuery,
 } from '../../../store/service/goodsService';
 import { setComments } from '../../../store/slices/commentsSlice';
-import { setGoods } from '../../../store/slices/goodsSlice';
+import { ModalUpdatePost } from '../../modals/updatePost/ModalUpdatePost';  
 export const ArticleInfo: FC<TGoods> = (props) => {
 	const router = useRouter();
 
@@ -88,9 +88,12 @@ export const ArticleInfo: FC<TGoods> = (props) => {
 				<S.H1Ad>{`${price} ₽`}</S.H1Ad>
 				{currentUser === user.id ? (
 					<S.CurrentBTN>
+						<ModalControl id="change-post" modal={<ModalUpdatePost/>}>
 						<Button $color $border>
 							Редактировать объявление
 						</Button>
+</ModalControl>
+						
 						<Button $color $border onClick={handleDelete}>
 							Снять с публикации
 						</Button>
