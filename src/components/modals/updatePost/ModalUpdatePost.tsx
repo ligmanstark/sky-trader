@@ -5,7 +5,6 @@ import { InputField } from '../../form/InputField';
 import { Input } from '../../form/Input';
 import { Button } from '../../form/Button';
 import { ItemUpdPhotos } from './ItemUpdPhotos';
-import { TGoods } from '../../../store/slices/types';
 import * as S from './style';
 import {
 	useUpdateADSMutation,
