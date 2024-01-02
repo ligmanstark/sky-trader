@@ -5,6 +5,7 @@ import { InputField } from '../../form/InputField';
 import { Input } from '../../form/Input';
 import { Button } from '../../form/Button';
 import { ItemUpdPhotos } from './ItemUpdPhotos';
+import { TGoods } from '../../../store/slices/types';
 import * as S from './style';
 import {
 	useUpdateADSMutation,
@@ -14,19 +15,27 @@ import {
 } from '../../../store/service/goodsService';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { AddGoods,setCurrentStateDate } from '../../../store/slices/goodsSlice';
+import {
+	AddGoods,
+	setCurrentStateDate,
+} from '../../../store/slices/goodsSlice';
 import { setAccessToken } from '../../../store/slices/userSlice';
 
 export const ModalUpdatePost: FC = () => {
-	const data = useSelector((state: RootState) => state.goodsReducer.currentState)
-	const IdState = useSelector((state: RootState) => state.goodsReducer.idCurrentState)
+	const data = useSelector(
+		(state: RootState) => state.goodsReducer.currentState
+	);
+	const IdState = useSelector(
+		(state: RootState) => state.goodsReducer.idCurrentState
+	);
 
- 
-
- 	const [name, setName] = useState(data.title);
+	//@ts-ignore
+	const [name, setName] = useState(data.title);
+	//@ts-ignore
 	const [description, setDescription] = useState(data.description);
+	//@ts-ignore
 	const [price, setPrice] = useState(data.price);
- 	console.log(data);
+	console.log(data);
 	const dispatch = useDispatch();
 	const token = useSelector(
 		(state: RootState) => state.userReducer.access_token
@@ -36,7 +45,7 @@ export const ModalUpdatePost: FC = () => {
 	);
 	const [updateADS] = useUpdateADSMutation();
 	const [postADSWithImg] = usePostAdsWithImgMutation();
-const [updateStore]= useLazyGetAllGoodsQuery()
+	const [updateStore] = useLazyGetAllGoodsQuery();
 	const [putRefreshToken] = useSetRefreshTokenMutation();
 	const nameValueRef = useRef<HTMLInputElement>(null);
 	const descriptionValueRef =
@@ -55,13 +64,13 @@ const [updateStore]= useLazyGetAllGoodsQuery()
 					price: Number(priceValueRef.current?.value) as number,
 				},
 				accessToken: token as string,
-				id:IdState
+				id: IdState,
 			})
 				.unwrap()
 				.then((res) => {
-					updateStore()
-					dispatch(setCurrentStateDate(res))
- 					close();
+					updateStore();
+					dispatch(setCurrentStateDate(res));
+					close();
 				})
 				.catch((error) => {
 					if (error.status === 401) {
@@ -84,13 +93,13 @@ const [updateStore]= useLazyGetAllGoodsQuery()
 										) as number,
 									},
 									accessToken: token as string,
-									id:IdState
+									id: IdState,
 								})
 									.unwrap()
 									.then((res) => {
-										updateStore()
+										updateStore();
 
- 										close();
+										close();
 									});
 							});
 					}
@@ -103,8 +112,6 @@ const [updateStore]= useLazyGetAllGoodsQuery()
 	const handleClose = () => {
 		close();
 	};
-
- 
 
 	return (
 		<S.Wrapper>
