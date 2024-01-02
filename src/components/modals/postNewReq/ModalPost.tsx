@@ -1,4 +1,4 @@
-import { FC, useRef, MutableRefObject } from 'react';
+import { FC, useRef, MutableRefObject,useState } from 'react';
 import { useModal } from '../../../hooks/useModal';
 import { Close } from '../../../assets/img/index';
 import { InputField } from '../../form/InputField';
@@ -20,6 +20,7 @@ import { ModalControl } from '../ModalControl';
 import { ModalUploadImg } from './ModalUploadImg';
 
 export const ModalPost: FC = () => {
+    const [name, setName] = useState('');
 	const dispatch = useDispatch();
 	const token = useSelector(
 		(state: RootState) => state.userReducer.access_token
@@ -84,12 +85,18 @@ export const ModalPost: FC = () => {
 							});
 					}
 				});
+		} else {
+			alert('Заполните все поля!');
 		}
 	};
 
 	const handleClose = () => {
 		close();
-	};
+    };
+    
+    const setCheck = (event:any) => {
+        
+    }
 
 	return (
 		<S.Wrapper>
@@ -117,8 +124,10 @@ export const ModalPost: FC = () => {
 								type="text"
 								placeholder="Введите название"
 								required
-								ref={nameValueRef}
-							/>
+                                ref={nameValueRef}
+                                onChange={(e) =>
+                                    setName(e.target.value)
+                                }							/>
 						</InputField>
 					</S.TitleBox>
 					<S.DescriptionBox>
@@ -211,27 +220,18 @@ export const ModalPost: FC = () => {
 							</S.AfterBox>
 						</InputField>
 						<>
-							{nameValueRef.current?.value ||
-							descriptionValueRef.current?.value ||
-							priceValueRef.current?.value ? (
-								<Button
-									style={{ marginTop: '1rem' }}
-									$border
-									type="submit"
-									onClick={handlePost}
-								>
-									Опубликовать
-								</Button>
-							) : (
-								<NoButton
-									style={{ marginTop: '1rem', background: 'grey' }}
-									$border
-									type="submit"
-									onClick={handlePost}
-								>
-									Опубликовать
-								</NoButton>
-							)}
+							<Button
+								style={{
+									marginTop: '1rem',
+									background:
+										name === '' ? 'grey' : '',
+								}}
+								$border
+								type="submit"
+								onClick={handlePost}
+							>
+								Опубликовать
+							</Button>
 						</>
 					</S.PriceBox>
 				</S.SubBox>

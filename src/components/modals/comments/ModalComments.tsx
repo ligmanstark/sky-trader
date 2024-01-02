@@ -1,4 +1,4 @@
-import { FC, useRef, MutableRefObject } from 'react';
+import { FC, useState, useRef, MutableRefObject } from 'react';
 import * as S from './style';
 import { TComments } from '../../../store/service/types/TComments';
 import { Button } from '../../form/Button';
@@ -14,8 +14,9 @@ import {
 	useSetRefreshTokenMutation,
 } from '../../../store/service/goodsService';
 import { addComments } from '../../../store/slices/commentsSlice';
-import  Link  from 'next/link';
+import Link from 'next/link';
 export const ModalComments: FC = () => {
+	const [check, setCheck] = useState('');
 	const textRef = useRef() as MutableRefObject<HTMLTextAreaElement>;
 	const dispatch = useDispatch();
 	const [postComment] = usePostCommentMutation();
@@ -48,14 +49,14 @@ export const ModalComments: FC = () => {
 				console.log(textRef.current.value);
 				textRef.current.value = '';
 			})
-			.catch(async (error:any) => {
+			.catch(async (error: any) => {
 				if (error.status === 401) {
 					await putRefreshToken({
 						access_token: accessToken as string,
 						refresh_token: refreshToken as string,
 					})
 						.unwrap()
-						.then((newToken:any) => {
+						.then((newToken: any) => {
 							console.log('token upload');
 							dispatch(setAccessToken(newToken));
 							localStorage.setItem('token', newToken.access_token);
@@ -69,7 +70,7 @@ export const ModalComments: FC = () => {
 									dispatch(addComments(POST));
 									console.log(textRef.current.value);
 									textRef.current.value = '';
-								})
+								});
 						})
 						.catch(() => {
 							<Link href="/login"></Link>;
@@ -99,8 +100,13 @@ export const ModalComments: FC = () => {
 									name="comment"
 									id="comment"
 									ref={textRef}
+									onChange={(e) => setCheck(e.target.value)}
 								></S.TextArea>
-								<Button $border onClick={handlePostComment}>
+								<Button
+									$border
+									onClick={handlePostComment}
+									style={{ background: check === '' ? 'grey' : '' }}
+								>
 									Опубликовать
 								</Button>
 							</S.SubBoxContent>
