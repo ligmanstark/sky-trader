@@ -125,7 +125,7 @@ export const ModalUpdatePost: FC = () => {
 						marginBottom: '2rem',
 					}}
 				>
-					<h1>Новое объявление</h1>
+					<h1>Редактировать объявление</h1>
 					<div onClick={handleClose} style={{ cursor: 'pointer' }}>
 						<Close />
 					</div>
