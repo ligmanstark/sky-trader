@@ -1,9 +1,9 @@
-import { FC, useRef, MutableRefObject,useState } from 'react';
+import { FC, useRef, MutableRefObject, useState } from 'react';
 import { useModal } from '../../../hooks/useModal';
 import { Close } from '../../../assets/img/index';
 import { InputField } from '../../form/InputField';
 import { Input } from '../../form/Input';
-import { Button, NoButton } from '../../form/Button';
+import { Button } from '../../form/Button';
 import { ItemPhotos } from './ItemPhotos';
 import * as S from './style';
 import {
@@ -16,11 +16,8 @@ import { RootState } from '../../../store/store';
 import { AddGoods } from '../../../store/slices/goodsSlice';
 import { setAccessToken } from '../../../store/slices/userSlice';
 
-import { ModalControl } from '../ModalControl';
-import { ModalUploadImg } from './ModalUploadImg';
-
 export const ModalPost: FC = () => {
-    const [name, setName] = useState('');
+	const [name, setName] = useState('');
 	const dispatch = useDispatch();
 	const token = useSelector(
 		(state: RootState) => state.userReducer.access_token
@@ -92,11 +89,29 @@ export const ModalPost: FC = () => {
 
 	const handleClose = () => {
 		close();
-    };
-    
-    const setCheck = (event:any) => {
-        
-    }
+	};
+
+	const handleImg = (event: any) => {
+		const files = event.target.files ? event.target.files[0] : null;
+		console.log(event.target.files[0]);
+		if (files) {
+			const reader = new FileReader();
+			reader.readAsDataURL(files);
+			console.log(reader.readAsDataURL(files));
+			postADSWithImg({
+				accessToken: token as string,
+				body: {
+					fields: {
+						title: nameValueRef.current?.value as string,
+						description: descriptionValueRef.current.value as string,
+						price: Number(priceValueRef.current?.value) as number,
+					},
+					credent: files,
+				},
+			}).unwrap();
+			return;
+		}
+	};
 
 	return (
 		<S.Wrapper>
@@ -124,10 +139,9 @@ export const ModalPost: FC = () => {
 								type="text"
 								placeholder="Введите название"
 								required
-                                ref={nameValueRef}
-                                onChange={(e) =>
-                                    setName(e.target.value)
-                                }							/>
+								ref={nameValueRef}
+								onChange={(e) => setName(e.target.value)}
+							/>
 						</InputField>
 					</S.TitleBox>
 					<S.DescriptionBox>
@@ -160,48 +174,9 @@ export const ModalPost: FC = () => {
 									type="file"
 									style={{ display: 'none' }}
 									ref={imageRef}
+									onChange={(event) => handleImg(event)}
 								/>
 							</label>
-							{/* <label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									onChange={(event) => handlePost(event)}
-								/>
-							</label>{' '}
-							<label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									onChange={(event) => handlePost(event)}
-								/>
-							</label>{' '}
-							<label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									onChange={(event) => handlePost(event)}
-								/>
-							</label>{' '}
-							<label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									onChange={(event) => handlePost(event)}
-								/>
-							</label>{' '} */}
 						</S.PhotoContent>
 					</S.PhotoBox>
 					<S.PriceBox>
@@ -223,12 +198,11 @@ export const ModalPost: FC = () => {
 							<Button
 								style={{
 									marginTop: '1rem',
-									background:
-										name === '' ? 'grey' : '',
+									background: name === '' ? 'grey' : '',
 								}}
 								$border
 								type="submit"
-								onClick={handlePost}
+								// onClick={handleImg}
 							>
 								Опубликовать
 							</Button>

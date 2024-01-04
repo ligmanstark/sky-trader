@@ -140,18 +140,6 @@ export const goodsApi = createApi({
 				}
 			}
 		}),
-		// updateUserAvatar: builder.mutation<object,{ body: FileReader; accessToken: string }>({
-		// 	query: ({ body, accessToken }) => ({
-		// 		url: '/user/avatar',
-		// 		method: 'POST',
-		// 		// credentials: 'include',
-		// 		body,
-		// 		headers: {
-		// 			'content-type': 'application/json',
-		// 			Authorization: `Bearer ${accessToken}`,
-		// 		},
-		// 	}),
-		// }),
 		getAllComments: builder.query<T.TComments[] | null,{id:number,accessToken:string}>({
 			query: ({id,accessToken}) => ({
 				url: `/ads/${id}/comments`,
@@ -176,19 +164,20 @@ export const goodsApi = createApi({
 
 			})
 		}),
-		postAdsWithImg: builder.mutation<T.TGoods, {files:File|null,fields:{title:string,description:string,price:number},accessToken:string}>({
-			query: ({ files,fields, accessToken }) => {
+		postAdsWithImg: builder.mutation<T.TGoods, { body: { credent: File | null, fields: { title: string, description: string, price: number } },accessToken:string}>({
+			query: ({ body, accessToken }) => {
 				
 				const formData = new FormData()
-				if(files)
-				formData.append('file', files)
-				const queryString = createQueryString(fields);
+				if(body.credent)
+				formData.append('file', body.credent)
+				const queryString = createQueryString(body.fields);
 				return {
 					url: `/ads/?${queryString}`,
 					method: 'POST',
-					body: {fields,files},
+					body: body,
 					headers: {
- 						Authorization: `Bearer ${accessToken}`,
+						Authorization: `Bearer ${accessToken}`,
+ 
 					},
 				}
 			}
