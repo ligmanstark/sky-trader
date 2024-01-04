@@ -635,3 +635,22 @@ export const AddImage: FC = () => (
 		<path d="M60 45H30" stroke="#D9D9D9" stroke-width="3" />
 	</svg>
 );
+
+export const IconAdd: FC = () => (
+	<svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+	  <path d="M15 0V30" fill="none" strokeWidth="3" />
+	  <path d="M30 15L1.10269e-06 15" fill="none" strokeWidth="3" />
+	</svg>
+  );
+  
+  export const IconDelete: FC = () => (
+	<svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+	  <path
+		d="M9 7.5C9 6.70435 9.31607 5.94129 9.87868 5.37868C10.4413 4.81607 11.2044 4.5 12 4.5C12.7956 4.5 13.5587 4.81607 14.1213 5.37868C14.6839 5.94129 15 6.70435 15 7.5M9 7.5H15M9 7.5H6M15 7.5H18M6 7.5H4M6 7.5V18.5C6 19.0304 6.21071 19.5391 6.58579 19.9142C6.96086 20.2893 7.46957 20.5 8 20.5H12M18 7.5H20M18 7.5V18.5C18 19.0304 17.7893 19.5391 17.4142 19.9142"
+		fill="none"
+		strokeWidth="1.5"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+	  />
+	</svg>
+  );

@@ -40,3 +40,5 @@ export const ButtonClose = styled.div``;
 export const Buttons = styled.div`
 	margin-top: 2rem;
 `;
+
+export const Images = styled.div``

@@ -22,12 +22,12 @@ export const goodsApi = createApi({
 			providesTags: (result) =>
 				result
 					? [
-							...result.map(({ id }) => ({
-								type: 'Goods' as const,
-								id,
-							})),
-							{ type: 'Goods', id: 'LIST' },
-]
+						...result.map(({ id }) => ({
+							type: 'Goods' as const,
+							id,
+						})),
+						{ type: 'Goods', id: 'LIST' },
+					]
 					: [{ type: 'Goods', id: 'LIST' }],
 		}),
 		getByIdGood: builder.query<T.TGoods, number>({
@@ -50,15 +50,15 @@ export const goodsApi = createApi({
 			providesTags: (result) =>
 				result
 					? [
-							...result.map(({ id }) => ({
-								type: 'Users' as const,
-								id,
-							})),
-							{ type: 'Users', id: 'LIST' },
- ]
+						...result.map(({ id }) => ({
+							type: 'Users' as const,
+							id,
+						})),
+						{ type: 'Users', id: 'LIST' },
+					]
 					: [{ type: 'Users', id: 'LIST' }],
 		}),
-		setRegisterUser: builder.mutation<T.TRegisterUser,{ body: T.TRegisterUserReq }>({
+		setRegisterUser: builder.mutation<T.TRegisterUser, { body: T.TRegisterUserReq }>({
 			query: ({ body }) => ({
 				url: '/auth/register',
 				method: 'POST',
@@ -98,7 +98,7 @@ export const goodsApi = createApi({
 				},
 			}),
 		}),
-		updateUser: builder.mutation<T.TUpdateUser,{ body: T.TUpdateUserReq; accessToken: string }>({
+		updateUser: builder.mutation<T.TUpdateUser, { body: T.TUpdateUserReq; accessToken: string }>({
 			query: ({ body, accessToken }) => ({
 				url: '/user',
 				method: 'PATCH',
@@ -109,7 +109,7 @@ export const goodsApi = createApi({
 				},
 			}),
 		}),
-		updatePassword: builder.mutation<T.TUpdatePassword,{ body: T.TUpdatePasswordReq; accessToken: string }>({
+		updatePassword: builder.mutation<T.TUpdatePassword, { body: T.TUpdatePasswordReq; accessToken: string }>({
 			query: ({ body, accessToken }) => ({
 				url: '/user/password',
 				method: 'PUT',
@@ -120,14 +120,14 @@ export const goodsApi = createApi({
 				},
 			}),
 		}),
-		updateUserAvatar: builder.mutation<T.TUpdateUser, { credent: File | null; accessToken:string} >({
-			query: ({credent,accessToken}) => {
+		updateUserAvatar: builder.mutation<T.TUpdateUser, { credent: File | null; accessToken: string }>({
+			query: ({ credent, accessToken }) => {
 				const formData = new FormData()
 				if (credent) {
 					formData.append('file', credent)
-					console.log('then=',credent);
+					console.log('then=', credent);
 				} else {
-					console.log('error=',credent);
+					console.log('error=', credent);
 
 				}
 				return {
@@ -135,13 +135,13 @@ export const goodsApi = createApi({
 					method: 'POST',
 					body: formData,
 					headers: {
- 						Authorization: `Bearer ${accessToken}`,
+						Authorization: `Bearer ${accessToken}`,
 					},
 				}
 			}
 		}),
-		getAllComments: builder.query<T.TComments[] | null,{id:number,accessToken:string}>({
-			query: ({id,accessToken}) => ({
+		getAllComments: builder.query<T.TComments[] | null, { id: number, accessToken: string }>({
+			query: ({ id, accessToken }) => ({
 				url: `/ads/${id}/comments`,
 				method: 'GET',
 				headers: {
@@ -151,11 +151,11 @@ export const goodsApi = createApi({
 				}
 			})
 		}),
-		postComment: builder.mutation<T.TComments, { body:{text: string}; id:number,accessToken:string}>({
-			query: ({body,id,accessToken}) => ({
+		postComment: builder.mutation<T.TComments, { body: { text: string }; id: number, accessToken: string }>({
+			query: ({ body, id, accessToken }) => ({
 				url: `/ads/${id}/comments`,
 				method: 'POST',
-				body:  body,
+				body: body,
 				headers: {
 					'content-type': 'application/json',
 					Authorization: `Bearer ${accessToken}`,
@@ -164,17 +164,24 @@ export const goodsApi = createApi({
 
 			})
 		}),
-		postAdsWithImg: builder.mutation<T.TGoods, { body: { credent: File | null, fields: { title: string, description: string, price: number } },accessToken:string}>({
-			query: ({ body, accessToken }) => {
+		postAdsWithImg: builder.mutation<T.TGoods, { imgFiles: File[], fields: { title: string, description: string, price: number }, accessToken: string }>({
+			query: ({ imgFiles, fields, accessToken }) => {
 				
 				const formData = new FormData()
-				if(body.credent)
-				formData.append('file', body.credent)
-				const queryString = createQueryString(body.fields);
+				imgFiles.forEach((file: File | null) => {
+					if (file) {
+						formData.append('files', file, file.name)
+						console.log('then=', file);
+					} else {
+						console.log('error=', file);
+					}
+
+				});
+				const queryString = createQueryString(fields);
 				return {
 					url: `/ads/?${queryString}`,
 					method: 'POST',
-					body: body,
+					body: formData,
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
  
@@ -182,6 +189,46 @@ export const goodsApi = createApi({
 				}
 			}
 		}),
+		// postAdsWithImg: builder.mutation<T.TGoods, { body: { credent: File | null, fields: { title: string, description: string, price: number } },accessToken:string}>({
+		// 	query: ({ body, accessToken }) => {
+				
+		// 		const formData = new FormData()
+		// 		if(body.credent)
+		// 		formData.append('file', body.credent)
+		// 		const queryString = createQueryString(body.fields);
+		// 		return {
+		// 			url: `/ads/?${queryString}`,
+		// 			method: 'POST',
+		// 			body: body.credent,
+		// 			headers: {
+		// 				Authorization: `Bearer ${accessToken}`,
+ 
+		// 			},
+		// 		}
+		// 	}
+		// }),
+		// updatePicturies: builder.mutation < T.TUpdateUser, { credent: File | null;data:{title:string,description:string,price:number}; accessToken:string} >({
+		// 	query: ({credent,data,accessToken}) => {
+		// 		const formData = new FormData()
+		// 		const queryString = createQueryString(data);
+
+		// 		if (credent) {
+		// 			formData.append('file', credent)
+		// 			console.log('then=',credent);
+		// 		} else {
+		// 			console.log('error=',credent);
+
+		// 		}
+		// 		return {
+		// 			url: `/ads/?${queryString}`,
+		// 			method: 'POST',
+		// 			body: formData,
+		// 			headers: {
+ 		// 				Authorization: `Bearer ${accessToken}`,
+		// 			},
+		// 		}
+		// 	}
+		// }),
 		postAdsWithoutImg: builder.mutation<T.TGoods, { body: { title: string, description: string, price: number}, accessToken: string }>({
 			query: ({ body, accessToken }) => {
   				return {
@@ -227,6 +274,7 @@ export const goodsApi = createApi({
 });
 
 export const {
+	// useUpdatePicturiesMutation,
 	useGetAllGoodsQuery,
 	useGetAllUsersQuery,
 	useSetLoginUserMutation,

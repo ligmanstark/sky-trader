@@ -58,7 +58,7 @@ export const ArticleInfo: FC<TGoods> = (props) => {
 		.split('-')
 		.reverse()
 		.reduce((el, sum) => el + '.' + sum);
-	const newPhone = user.phone.slice(0, 7) + 'XXXXXX';
+	const newPhone = user?.phone?.slice(0, 7) + 'XXXXXX';
 	const phoneShow = () => {
 		isShowPhone((prev) => !prev);
 	};

@@ -1,4 +1,6 @@
 import { FC, useRef, MutableRefObject, useState } from 'react';
+import React, { forwardRef } from 'react';
+
 import { useModal } from '../../../hooks/useModal';
 import { Close } from '../../../assets/img/index';
 import { InputField } from '../../form/InputField';
@@ -10,6 +12,7 @@ import {
 	usePostAdsWithoutImgMutation,
 	usePostAdsWithImgMutation,
 	useSetRefreshTokenMutation,
+	// useUpdatePicturiesMutation,
 } from '../../../store/service/goodsService';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
@@ -29,6 +32,8 @@ export const ModalPost: FC = () => {
 	const [postADSWithImg] = usePostAdsWithImgMutation();
 
 	const [putRefreshToken] = useSetRefreshTokenMutation();
+
+	// const [pic] = useUpdatePicturiesMutation();
 	const nameValueRef = useRef<HTMLInputElement>(null);
 	const descriptionValueRef =
 		useRef() as MutableRefObject<HTMLTextAreaElement>;
@@ -36,6 +41,12 @@ export const ModalPost: FC = () => {
 	const imageRef = useRef<HTMLInputElement | null>(null);
 
 	const { close } = useModal('post');
+
+	const initialImgFiles: Array<File | null> = Array.from(
+		{ length: 5 },
+		() => null
+	);
+	const [imgFiles, setImgFiles] = useState(initialImgFiles);
 
 	const handlePost = () => {
 		if (nameValueRef.current?.value && priceValueRef.current?.value) {
@@ -91,28 +102,63 @@ export const ModalPost: FC = () => {
 		close();
 	};
 
-	const handleImg = (event: any) => {
-		const files = event.target.files ? event.target.files[0] : null;
-		console.log(event.target.files[0]);
+	const handleImg = (e: any, index: any) => {
+		const files = e.target.files ? e.target.files[0] : null;
+
 		if (files) {
 			const reader = new FileReader();
+			reader.onload = () => {
+				setImgFiles((prevImgFiles) =>
+					prevImgFiles.map((imgFile, i) => (i === index ? files : imgFile))
+				);
+			};
 			reader.readAsDataURL(files);
-			console.log(reader.readAsDataURL(files));
 			postADSWithImg({
 				accessToken: token as string,
-				body: {
-					fields: {
-						title: nameValueRef.current?.value as string,
-						description: descriptionValueRef.current.value as string,
-						price: Number(priceValueRef.current?.value) as number,
-					},
-					credent: files,
+				imgFiles: files,
+				fields: {
+					title: nameValueRef.current?.value as string,
+					description: descriptionValueRef.current.value as string,
+					price: Number(priceValueRef.current?.value) as number,
 				},
-			}).unwrap();
-			return;
+			})
+				.unwrap()
+				.then((res) => {
+					console.log(res);
+				});
+			// pic({
+			// 	accessToken: token as string,
+			// 	credent: files,
+			// 	data: {
+			// 		title: nameValueRef.current?.value as string,
+			// 		description: descriptionValueRef.current.value as string,
+			// 		price: Number(priceValueRef.current?.value) as number,
+			// 	},
+			// }).unwrap();
 		}
 	};
 
+	// const handleImg = (event: any) => {
+	// 	const files = event.target.files ? event.target.files[0] : null;
+	// 	console.log(event.target.files[0]);
+	// 	if (files) {
+	// 		const reader = new FileReader();
+	// 		reader.readAsDataURL(files);
+	// 		console.log(reader.readAsDataURL(files));
+	// 		postADSWithImg({
+	// 			accessToken: token as string,
+	// 			body: {
+	// 				fields: {
+	// 					title: nameValueRef.current?.value as string,
+	// 					description: descriptionValueRef.current.value as string,
+	// 					price: Number(priceValueRef.current?.value) as number,
+	// 				},
+	// 				credent: files,
+	// 			},
+	// 		}).unwrap();
+	// 		return;
+	// 	}
+	// };
 	return (
 		<S.Wrapper>
 			<S.Box>
@@ -166,17 +212,34 @@ export const ModalPost: FC = () => {
 							<S.TextGrey>не более 5 фотографий</S.TextGrey>
 						</div>
 						<S.PhotoContent>
-							<label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									ref={imageRef}
-									onChange={(event) => handleImg(event)}
-								/>
-							</label>
+							{/* <S.Images>
+								<label id="name">
+									<ItemPhotos />
+									<input
+										name="Photo"
+										id="name"
+										type="file"
+										style={{ display: 'none' }}
+										ref={imageRef}
+										// onChange={(event) => handleImg(event)}
+									/>
+								</label>
+							</S.Images> */}
+							{imgFiles.map((imgFile, index) => (
+								<label id="name" key={index}>
+									<ItemPhotos />
+									<input
+										name="Photo"
+										id="name"
+										type="file"
+										style={{ display: 'none', cursor: 'pointer' }}
+										key={index}
+										accept="image/*"
+										onChange={(e) => handleImg(e, index)}
+										// onChange={(e) => handleImg(e, index)}
+									/>
+								</label>
+							))}
 						</S.PhotoContent>
 					</S.PhotoBox>
 					<S.PriceBox>
@@ -202,7 +265,7 @@ export const ModalPost: FC = () => {
 								}}
 								$border
 								type="submit"
-								// onClick={handleImg}
+								onClick={handlePost}
 							>
 								Опубликовать
 							</Button>
