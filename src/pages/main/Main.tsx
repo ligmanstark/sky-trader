@@ -9,6 +9,7 @@ import { RootState } from '../../store/store';
 import { setGoods, setSearchGood } from '../../store/slices/goodsSlice';
 import {
 	useGetAllGoodsQuery,
+	useLazyGetAllGoodsQuery,
 	useLazyGetByIdGoodQuery,
 } from '../../store/service/goodsService';
 import { Logomini } from '../../assets/img/index';
@@ -29,6 +30,8 @@ const MainPage = () => {
 
 const Main: FC = () => {
 	const dispatch = useDispatch();
+	const [updateFetch]=useLazyGetAllGoodsQuery()
+	const currentUser = useSelector((state:RootState)=>state.goodsReducer.currentState)
 	const { data = [], isLoading } = useGetAllGoodsQuery();
 	const searchRef = useSelector(
 		(state: RootState) => state.goodsReducer.searchRef
@@ -36,8 +39,9 @@ const Main: FC = () => {
 	const [fetchSearch] = useLazyGetByIdGoodQuery();
 
 	useEffect(() => {
+		updateFetch()
 		dispatch(setGoods(data));
-	}, [data, dispatch, isLoading]);
+	}, [currentUser, dispatch, isLoading]);
 
 	const fetchGood = () => {
 		if (searchRef !== '') {
@@ -57,10 +61,7 @@ const Main: FC = () => {
 
 	return (
 		<>
-			{/* <HelmetHead
-				title={`Авито на свой лад`}
-				descr={`Заработай свой первый рубль!`}
-			/> */}
+ 
 			<SMain>
 				<Container>
 					<SearchBox>

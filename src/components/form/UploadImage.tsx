@@ -5,16 +5,15 @@ import { IconAdd, IconDelete } from '../../assets/img/index';
 import styled from '@emotion/styled';
 import { SERVER_URL } from '../../utils/consts';
 import { isFunction, isUndefined } from '@bunt/is';
- 
-type Props = {
+ type Props = {
     getFile?: (file: File | null) => void;
-    deleteFile?: () => void;
+    deleteFile?: (file:string) => void;
     src?: string;
 };
   
 // eslint-disable-next-line react/display-name
 export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
-     const { getFile, src, deleteFile, ...rest } = props;
+      const { getFile, src, deleteFile, ...rest } = props;
     const [imageSrc, setImageSrc] = useState<string | null>(src ?? null);
   
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,18 +25,18 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
         };
         reader.readAsDataURL(file);
         isFunction(getFile) && getFile(file);
-        return;
+         return;
       }
     };
   
     const clearImage = () => {
       setImageSrc(null);
       isFunction(getFile) && getFile(null);
-      isFunction(deleteFile) && deleteFile();
+      isFunction(deleteFile) && deleteFile('');
     };
   
-    const localImage = imageSrc?.split('/')[0] === 'data:image';
-  
+  const localImage = imageSrc?.split('/')[0] === 'data:image';
+ 
     return (
       <Wrapper>
         {imageSrc && (
@@ -51,7 +50,7 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
               isUndefined(deleteFile) ? imageSrc : localImage ? imageSrc : `${SERVER_URL}/${imageSrc}`
             }
             alt="Uploaded"
-          />
+           />
         )}
         <input ref={ref} {...rest} type="file" accept="image/*" onChange={handleImageChange} />
         {!imageSrc && <IconAdd />}

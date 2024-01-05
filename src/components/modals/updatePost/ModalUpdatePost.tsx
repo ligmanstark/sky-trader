@@ -1,16 +1,18 @@
+//@ts-nocheck
 import { FC, useRef, MutableRefObject, useState } from 'react';
 import { useModal } from '../../../hooks/useModal';
 import { Close } from '../../../assets/img/index';
 import { InputField } from '../../form/InputField';
 import { Input } from '../../form/Input';
 import { Button } from '../../form/Button';
-import { ItemUpdPhotos } from './ItemUpdPhotos';
+import { UploadImage } from '../../form/UploadImage';
 import * as S from './style';
 import {
 	useUpdateADSMutation,
-	usePostAdsWithImgMutation,
 	useSetRefreshTokenMutation,
 	useLazyGetAllGoodsQuery,
+	useUpdatePicturiesMutation,
+	useDeletePicturiesMutation,
 } from '../../../store/service/goodsService';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
@@ -21,12 +23,14 @@ import {
 import { setAccessToken } from '../../../store/slices/userSlice';
 
 export const ModalUpdatePost: FC = () => {
+	const [localID, setLocalID] = useState(Number);
 	const data = useSelector(
 		(state: RootState) => state.goodsReducer.currentState
 	);
 	const IdState = useSelector(
 		(state: RootState) => state.goodsReducer.idCurrentState
 	);
+	const [deletePic] = useDeletePicturiesMutation();
 
 	//@ts-ignore
 	const [name, setName] = useState(data.title);
@@ -34,7 +38,6 @@ export const ModalUpdatePost: FC = () => {
 	const [description, setDescription] = useState(data.description);
 	//@ts-ignore
 	const [price, setPrice] = useState(data.price);
-	console.log(data);
 	const dispatch = useDispatch();
 	const token = useSelector(
 		(state: RootState) => state.userReducer.access_token
@@ -43,18 +46,17 @@ export const ModalUpdatePost: FC = () => {
 		(state: RootState) => state.userReducer.refresh_token
 	);
 	const [updateADS] = useUpdateADSMutation();
-	const [postADSWithImg] = usePostAdsWithImgMutation();
 	const [updateStore] = useLazyGetAllGoodsQuery();
 	const [putRefreshToken] = useSetRefreshTokenMutation();
 	const nameValueRef = useRef<HTMLInputElement>(null);
 	const descriptionValueRef =
 		useRef() as MutableRefObject<HTMLTextAreaElement>;
 	const priceValueRef = useRef<HTMLInputElement>(null);
-	const imageRef = useRef<HTMLInputElement | null>(null);
 
 	const { close } = useModal('change-post');
+	const [pic] = useUpdatePicturiesMutation();
 
-	const handlePost = () => {
+	const handlePost = (e: any) => {
 		if (nameValueRef.current?.value && priceValueRef.current?.value) {
 			updateADS({
 				body: {
@@ -67,9 +69,9 @@ export const ModalUpdatePost: FC = () => {
 			})
 				.unwrap()
 				.then((res) => {
-					updateStore();
 					dispatch(setCurrentStateDate(res));
-					close();
+					setLocalID(res.id as number);
+					updateStore();
 				})
 				.catch((error) => {
 					if (error.status === 401) {
@@ -86,7 +88,7 @@ export const ModalUpdatePost: FC = () => {
 									body: {
 										title: nameValueRef.current?.value as string,
 										description: descriptionValueRef.current
-											.value as string,
+											?.value as string,
 										price: Number(
 											priceValueRef.current?.value
 										) as number,
@@ -106,12 +108,29 @@ export const ModalUpdatePost: FC = () => {
 		} else {
 			alert('Заполните все поля!');
 		}
+		close();
 	};
 
 	const handleClose = () => {
 		close();
 	};
 
+	const handleUpdate = async (file: File | null) => {
+		const files = file;
+		await pic({ accessToken: token as string, id: IdState, credent: files })
+			.unwrap()
+			.then((res) => {
+				dispatch(AddGoods(res));
+				console.log(res);
+			});
+	};
+
+	const handleDelete = async (file: any) => {
+		await deletePic({ accessToken: token as string, id: IdState, file_url: file })
+			.unwrap()
+			.then((res) => updateStore());
+	};
+console.log(data);
 	return (
 		<S.Wrapper>
 			<S.Box>
@@ -168,56 +187,90 @@ export const ModalUpdatePost: FC = () => {
 							<S.TextGrey>не более 5 фотографий</S.TextGrey>
 						</div>
 						<S.PhotoContent>
-							<label id="name">
-								<ItemUpdPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									ref={imageRef}
-								/>
-							</label>
-							{/* <label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									onChange={(event) => handlePost(event)}
-								/>
-							</label>{' '}
-							<label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									onChange={(event) => handlePost(event)}
-								/>
-							</label>{' '}
-							<label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									onChange={(event) => handlePost(event)}
-								/>
-							</label>{' '}
-							<label id="name">
-								<ItemPhotos />
-								<input
-									name="Photo"
-									id="name"
-									type="file"
-									style={{ display: 'none' }}
-									onChange={(event) => handlePost(event)}
-								/>
-							</label>{' '} */}
+							<>
+								{data.images[0] ? (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() =>
+											handleDelete(data.images[0].url)
+										}
+										src={data.images[0].url}
+									/>
+								) : (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() => handleDelete()}
+									/>
+								)}
+							</>
+
+							<>
+								{data.images[1] ? (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() =>
+											handleDelete(data.images[1].url)
+										}
+										src={data.images[1].url}
+									/>
+								) : (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() => handleDelete()}
+									/>
+								)}
+							</>
+
+							<>
+								{data.images[2] ? (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() =>
+											handleDelete(data.images[2].url)
+										}
+										src={data.images[2].url}
+									/>
+								) : (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() => handleDelete()}
+									/>
+								)}
+							</>
+
+							<>
+								{data.images[3] ? (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() =>
+											handleDelete(data.images[3].url)
+										}
+										src={data.images[3].url}
+									/>
+								) : (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() => handleDelete()}
+									/>
+								)}
+							</>
+
+							<>
+								{data.images[4] ? (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() =>
+											handleDelete(data.images[4].url)
+										}
+										src={data.images[4].url}
+									/>
+								) : (
+									<UploadImage
+										getFile={(file) => handleUpdate(file)}
+										deleteFile={() => handleDelete()}
+									/>
+								)}
+							</>
 						</S.PhotoContent>
 					</S.PhotoBox>
 					<S.PriceBox>
@@ -247,7 +300,7 @@ export const ModalUpdatePost: FC = () => {
 								type="submit"
 								onClick={handlePost}
 							>
-								Опубликовать
+								Редактировать
 							</Button>
 						</>
 					</S.PriceBox>

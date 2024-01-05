@@ -8,4 +8,5 @@ export type TGoodsState = {
 	idCurrentState: number;
 	status?: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error?: string | undefined;
+	imageState:T.TGoods[]
 };

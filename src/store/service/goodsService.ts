@@ -3,8 +3,7 @@ import * as T from './types/index';
 import { createQueryString } from '../../components/helpers/api';
 import { BASE_URL } from '../../utils/consts';
  
- type TFields = Record<string, string | number>;
-export const goodsApi = createApi({
+  export const goodsApi = createApi({
 	reducerPath: 'goodsApi',
 	tagTypes: ['Users', 'Goods'],
 	baseQuery: fetchBaseQuery({
@@ -189,46 +188,41 @@ export const goodsApi = createApi({
 				}
 			}
 		}),
-		// postAdsWithImg: builder.mutation<T.TGoods, { body: { credent: File | null, fields: { title: string, description: string, price: number } },accessToken:string}>({
-		// 	query: ({ body, accessToken }) => {
-				
-		// 		const formData = new FormData()
-		// 		if(body.credent)
-		// 		formData.append('file', body.credent)
-		// 		const queryString = createQueryString(body.fields);
-		// 		return {
-		// 			url: `/ads/?${queryString}`,
-		// 			method: 'POST',
-		// 			body: body.credent,
-		// 			headers: {
-		// 				Authorization: `Bearer ${accessToken}`,
+	 
+		updatePicturies: builder.mutation < T.TUpdateUser, { credent: File | null;id:number ; accessToken:string} >({
+			query: ({id,credent,accessToken}) => {
+				const formData = new FormData()
  
-		// 			},
-		// 		}
-		// 	}
-		// }),
-		// updatePicturies: builder.mutation < T.TUpdateUser, { credent: File | null;data:{title:string,description:string,price:number}; accessToken:string} >({
-		// 	query: ({credent,data,accessToken}) => {
-		// 		const formData = new FormData()
-		// 		const queryString = createQueryString(data);
+				if (credent) {
+					formData.append('file', credent)
+					console.log('then=',credent);
+				} else {
+					console.log('error=',credent);
 
-		// 		if (credent) {
-		// 			formData.append('file', credent)
-		// 			console.log('then=',credent);
-		// 		} else {
-		// 			console.log('error=',credent);
-
-		// 		}
-		// 		return {
-		// 			url: `/ads/?${queryString}`,
-		// 			method: 'POST',
-		// 			body: formData,
-		// 			headers: {
- 		// 				Authorization: `Bearer ${accessToken}`,
-		// 			},
-		// 		}
-		// 	}
-		// }),
+				}
+				return {
+					url: `/ads/${id}/image`,
+					method: 'POST',
+					body: formData,
+					headers: {
+ 						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			}
+		}),
+		deletePicturies: builder.mutation < T.TUpdateUser, { file_url: string;id:number ; accessToken:string} >({
+			query: ({id,file_url,accessToken}) => {
+				const queryString = createQueryString({ file_url });
+				return {
+					url: `/ads/${id}/image?${queryString}`,
+					method: 'DELETE',
+  					headers: {
+ 						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			}
+		}),
+		 
 		postAdsWithoutImg: builder.mutation<T.TGoods, { body: { title: string, description: string, price: number}, accessToken: string }>({
 			query: ({ body, accessToken }) => {
   				return {
@@ -240,14 +234,7 @@ export const goodsApi = createApi({
 					},
 				
 				}
-				// ({
-				// 	url: '/adstext',
-				// 	method: 'POST',
-				// 	body: body,
-				// 	headers: {
-				// 		Authorization: `Bearer ${accessToken}`,
-				//    },
-				// })
+			 
 			}
 		}),
 		deleteADS: builder.mutation<void, { id: number, accessToken: string }>({
@@ -274,7 +261,7 @@ export const goodsApi = createApi({
 });
 
 export const {
-	// useUpdatePicturiesMutation,
+	useUpdatePicturiesMutation,
 	useGetAllGoodsQuery,
 	useGetAllUsersQuery,
 	useSetLoginUserMutation,
@@ -293,5 +280,6 @@ export const {
 	usePostAdsWithImgMutation,
 	usePostAdsWithoutImgMutation,
 	useDeleteADSMutation,
-	useUpdateADSMutation
+	useUpdateADSMutation,
+	useDeletePicturiesMutation
 } = goodsApi;
