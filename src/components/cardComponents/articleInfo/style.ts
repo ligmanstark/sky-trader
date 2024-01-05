@@ -31,9 +31,14 @@ export const SellsBox = styled.div`
 
 export const Buttons = styled.div``;
 
+export const CurrentBTN = styled.div`
+	display: flex;
+	gap: 1rem;
+`;
+
 export const SellerBox = styled.div`
-display: flex;
-    flex-direction: row;
+	display: flex;
+	flex-direction: row;
 `;
 export const SubSellerBox = styled.div``;
 

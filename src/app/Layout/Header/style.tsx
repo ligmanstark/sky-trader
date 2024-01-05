@@ -5,6 +5,8 @@ import  Link  from 'next/link';
 
 export const Wrapper = styled.header`
 	background: transparent;
+	height: 6rem;
+
 `;
 
 export const MyContainer = styled(Container)`

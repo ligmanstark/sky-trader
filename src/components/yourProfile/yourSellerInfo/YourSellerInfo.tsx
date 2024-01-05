@@ -199,7 +199,7 @@ export const YourSellerInfo: FC = () => {
 										style={{ marginTop: '1rem' }}
 										$border
 										type="submit"
-										onClick={handleUpdate}
+										// onClick={handleUpdate}
 									>
 										Сохранить
 									</NoButton>

@@ -16,7 +16,7 @@
 		"@emotion/styled": "^11.10.6",
 		"@reduxjs/toolkit": "^2.0.1",
 		"@types/react-image-gallery": "^1.2.4",
- 		"emotion-reset": "^3.0.1",
+		"emotion-reset": "^3.0.1",
 		"gh-pages": "^6.1.1",
 		"next": "14.0.2",
 		"react": "^18",
@@ -28,6 +28,8 @@
 		"react-router-dom": "^6.10.0"
 	},
 	"devDependencies": {
+		"@bunt/is": "^0.29.19",
+		"@bunt/type": "^0.29.19",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",

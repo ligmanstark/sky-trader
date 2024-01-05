@@ -1,19 +1,21 @@
-'use client'
+'use client';
 import { FC, useState, useEffect } from 'react';
-  import Link from 'next/link';
-import { MAIN_ROUTE,PROFILE_ROUTE_ME } from '../../../utils/consts';
+import Link from 'next/link';
+import { MAIN_ROUTE, PROFILE_ROUTE_ME } from '../../../utils/consts';
 import { Button } from '../../../components/form/Button';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { usePathname } from 'next/navigation';
+import { ModalControl } from '../../../components/modals/ModalControl';
+import { ModalPost } from '../../../components/modals/postNewReq/ModalPost';
 import * as S from './style';
 export const Header: FC = () => {
- 	const Auth = useSelector(
+	const Auth = useSelector(
 		(state: RootState) => state.userReducer.access_token
 	);
 
 	const [auth, setAuth] = useState(false);
-	const  pathname  = usePathname();
+	const pathname = usePathname();
 
 	useEffect(() => {
 		if (Auth !== '') {
@@ -43,9 +45,12 @@ export const Header: FC = () => {
 							</Link>
 						) : (
 							<S.ButtonBox>
-								<Button style={{ margin: '1rem' }} $color $border>
-									Разместить объявление
-								</Button>
+								<ModalControl id="post" modal={<ModalPost />}>
+									<Button style={{ margin: '1rem' }} $color $border>
+										Разместить объявление
+									</Button>
+								</ModalControl>
+
 								<Link href={PROFILE_ROUTE_ME}>
 									<Button style={{ margin: '1rem' }} $color $border>
 										Личный кабинет

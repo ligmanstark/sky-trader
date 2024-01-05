@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { setAccessToken, setUser } from '../../../store/slices/userSlice';
-export const ModalUploadAvatar2: FC = () => {
+export const ModalUploadImg: FC = () => {
 	const avatarRef = useRef<HTMLInputElement | null>(null);
 	const dispatch = useDispatch();
 	const token = useSelector(
@@ -69,9 +69,6 @@ export const ModalUploadAvatar2: FC = () => {
 				}
 			});
 	};
-	const handleClose = () => {
-		close()
-	}
 	return (
 		<S.Wrapper>
 			<S.Box>
@@ -91,7 +88,7 @@ export const ModalUploadAvatar2: FC = () => {
 						</S.ButtonClose>
 					</div>
 					<S.Buttons>
-						<Button $color $border onClick={handleClose}>
+						<Button $color $border onClick={handleUpload}>
 							Отправить
 						</Button>
 					</S.Buttons>
