@@ -1,10 +1,12 @@
 'use client';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { InputField } from '../../components/form/InputField';
 import { Input } from '../../components/form/Input';
 import { Button } from '../../components/form/Button';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
 import styled from '@emotion/styled';
 import { LogoPic } from '../../assets/img/index';
 import { MAIN_ROUTE } from '../../utils/consts';
@@ -15,8 +17,7 @@ import {
 	useSetLoginUserMutation,
 	useLazyGetUserQuery,
 } from '../../store/service/goodsService';
-
-type TSignUp = {
+  type TSignUp = {
 	email: string;
 	password: string;
 	repeat: string;
@@ -25,20 +26,15 @@ type TSignUp = {
 	city?: string;
 };
 
-
 const LoginPage = () => {
-if (typeof window !== 'undefined')
-	return (
-		<Login/>
-	)
-}
+	if (typeof window !== 'undefined') return <Login />;
+};
 
 const Login: FC = () => {
-	const [postToken] = useSetLoginUserMutation();
+ 	const [postToken,{isError}] = useSetLoginUserMutation();
 	const [postLogin] = useLazyGetUserQuery();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-
+	const router = useRouter();
 	const getToken = useSelector(
 		(state: RootState) => state.userReducer.access_token
 	);
@@ -57,6 +53,7 @@ const Login: FC = () => {
 		})
 			.unwrap()
 			.then((token: any) => {
+				console.log(token);
 				dispatch(
 					setAccessToken({
 						access_token: token.access_token,
@@ -67,7 +64,7 @@ const Login: FC = () => {
 
 				postLogin({ accessToken: token.access_token })
 					.unwrap()
-					.then((login) => {
+					.then((login:any) => {postLogin
 						dispatch(
 							setUser({
 								email: login.email,
@@ -76,20 +73,24 @@ const Login: FC = () => {
 								city: login.city,
 								phone: login.phone,
 								id: login.id,
+								avatar:login.avatar
 							})
 						);
-					});
-			});
-		setTimeout(() => {
-			localStorage.setItem('token', getToken as string);
+						setTimeout(() => {
+							localStorage.setItem('token', getToken as string);
+				
+							router.push(MAIN_ROUTE, { scroll: false });
+						}, 1500);
+					}) 
+			}).catch((error) => {
+				if (error.status === 401) {
+					console.log(error);
 
-			navigate(
-				MAIN_ROUTE
-				// { replace: true }
-			);
-		}, 1500);
+				}
+			});
+
+		
 	};
- 
 
 	return (
 		<Wrapper>
@@ -130,16 +131,21 @@ const Login: FC = () => {
 						placeholder="Password"
 					/>
 				</InputField>
-
+				<>
+				{isError ? <>
+				<TextError>Введены неккоректные данные</TextError>
+				</>:''}
+			</>
 				<Buttons>
-					<Button type="submit" $color>
+					<Button $border style={{borderRadius:'0.5rem'}}  type="submit" $color>
 						Войти
 					</Button>
-					<Link to={'/register'}>
-						<Button type="submit">Регистрация</Button>
+					<Link href={'/register'}>
+						<Button $border type="submit">Зарегистрироваться</Button>
 					</Link>
 				</Buttons>
 			</Form>
+			
 		</Wrapper>
 	);
 };
@@ -154,6 +160,9 @@ const Form = styled.form`
 	padding: 2rem 2.6rem 3rem;
 	width: 22.875rem;
 	box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+	html {
+		background-color: #f5f5f5;
+	}
 `;
 const Buttons = styled.div`
 	display: grid;
@@ -174,4 +183,8 @@ const Wrapper = styled.div`
 	height: 100%;
 `;
 
+const TextError = styled.p`
+color:red;
+
+`
 export default LoginPage;

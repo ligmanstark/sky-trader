@@ -1,17 +1,16 @@
-'use client'
+'use client';
 import { FC, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import * as S from './style';
 import { BASE_URL } from '../../../utils/consts';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { Button, NoButton } from '../../form/Button';
+import { Button } from '../../form/Button';
 import { NothingImage } from '../../../assets/img/index';
 import { InputPlaceBlack } from '../../form/Input';
 import { InputField } from '../../form/InputField';
 import { ModalControl } from '../../modals/ModalControl';
-// import { ModalUploadAvatar } from '../../modals/uploadAvatar/ModalUploadAvatar';
-import { ModalUploadAvatar2  } from '../../modals/uploadAvatar/ModalUploadAvatar2';
+import { ModalUploadAvatar2 } from '../../modals/uploadAvatar/ModalUploadAvatar';
 
 import {
 	useUpdateUserMutation,
@@ -114,12 +113,13 @@ export const YourSellerInfo: FC = () => {
 									});
 							})
 							.catch(() => {
-								<Link to="/login"></Link>;
+								<Link href="/login"></Link>;
 							});
 					}
 				});
 		}
 	};
+	console.log(avatar);
 	return (
 		<S.Wrapper>
 			<S.Box>
@@ -132,7 +132,10 @@ export const YourSellerInfo: FC = () => {
 						) : (
 							<NothingImage />
 						)}
-						<ModalControl id="uploadAvatar" modal={<ModalUploadAvatar2 />}>
+						<ModalControl
+							id="uploadAvatar"
+							modal={<ModalUploadAvatar2 />}
+						>
 							<p style={{ color: '#009ee4' }}>Заменить</p>
 						</ModalControl>
 					</S.SubBoxAvatar>
@@ -147,6 +150,13 @@ export const YourSellerInfo: FC = () => {
 											value={currName}
 											ref={nameContoll}
 											onChange={(e) => setCurrName(e.target.value)}
+											style={{
+												marginTop: '0.5rem',
+												marginBottom: '0.5rem',
+												paddingLeft: '0.8rem',
+												border: '2px solid #00000033',
+												borderRadius: '0.5rem',
+											}}
 										></InputPlaceBlack>
 									</div>
 									<div>
@@ -158,6 +168,14 @@ export const YourSellerInfo: FC = () => {
 											onChange={(e) =>
 												setCurrSurname(e.target.value)
 											}
+											style={{
+												marginTop: '0.5rem',
+												marginBottom: '0.5rem',
+												paddingLeft: '0.8rem',
+
+												border: '2px solid #00000033',
+												borderRadius: '0.5rem',
+											}}
 										></InputPlaceBlack>
 									</div>
 								</S.Info1>
@@ -169,6 +187,14 @@ export const YourSellerInfo: FC = () => {
 											value={currCity}
 											ref={cityControll}
 											onChange={(e) => setCurrCity(e.target.value)}
+											style={{
+												marginTop: '0.5rem',
+												marginBottom: '0.5rem',
+												paddingLeft: '0.8rem',
+												width: '15.5rem',
+												border: '2px solid #00000033',
+												borderRadius: '0.5rem',
+											}}
 										></InputPlaceBlack>
 									</div>
 									<div>
@@ -178,39 +204,36 @@ export const YourSellerInfo: FC = () => {
 											value={currPhone}
 											ref={phoneControll}
 											onChange={(e) => setCurrPhone(e.target.value)}
+											style={{
+												marginTop: '0.5rem',
+												marginBottom: '0.5rem',
+												paddingLeft: '0.8rem',
+												border: '2px solid #00000033',
+												borderRadius: '0.5rem',
+											}}
 										></InputPlaceBlack>
 									</div>
 								</S.Info2>
-								{nameContoll.current?.value ||
-								surnameContoll.current?.value ||
-								cityControll.current?.value ||
-								phoneControll.current?.value ? (
-									<Button
+								<>
+									{currName!==name ||currSurname!==surname ||currCity!==city||currPhone!==phone?<Button
 										style={{ marginTop: '1rem' }}
 										$border
+										$color
+										$width={1}
 										type="submit"
 										onClick={handleUpdate}
 									>
 										Сохранить
-									</Button>
-								) : (
-									<NoButton
-										style={{ marginTop: '1rem' }}
+									</Button>:<Button
+										style={{ marginTop: '1rem' ,background:'#D9D9D9',color:'white'}}
 										$border
+										$width={1}
 										type="submit"
-										onClick={handleUpdate}
-									>
+ 									>
 										Сохранить
-									</NoButton>
-								)}
-								{/* <Button
-										style={{ marginTop: '1rem' }}
-										$border
-										type="submit"
-										onClick={handleUpdate}
-									>
-										Сохранить
-									</Button> */}
+									</Button>}
+									
+								</>
 							</InputField>
 						</div>
 					</S.SubBoxInfo>

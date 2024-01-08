@@ -3,7 +3,6 @@ import { InputField } from '../../components/form/InputField';
 import { Input } from '../../components/form/Input';
 import { Button } from '../../components/form/Button';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { LogoPic } from '../../assets/img/index';
 import { LOGIN_ROUTE } from '../../utils/consts';
@@ -13,6 +12,7 @@ import {
 } from '../../store/service/goodsService';
 import { useDispatch } from 'react-redux';
 import { setUser, setAccessToken } from '../../store/slices/userSlice';
+import { useRouter } from 'next/navigation';
 
 const RegisterPage = () => {
 	if (typeof window !== 'undefined') return <Register />;
@@ -21,7 +21,7 @@ const Register: FC = () => {
 	const dispatch = useDispatch();
 	const [postReg] = useSetRegisterUserMutation();
 	const [postToken] = useSetLoginUserMutation();
-	const navigate = useNavigate();
+	const router = useRouter();
 
 	type TSignUp = {
 		email: string;
@@ -75,7 +75,7 @@ const Register: FC = () => {
 					.catch((err) => alert(err));
 			});
 		setTimeout(() => {
-			navigate(LOGIN_ROUTE);
+			router.push(LOGIN_ROUTE, { scroll: false });
 		}, 1500);
 	};
 
@@ -168,6 +168,9 @@ const Form = styled.form`
 	padding: 2rem 2.6rem 3rem;
 	width: 22.875rem;
 	box-shadow: 0 0.25reexport default MainPage;
+	html {
+		background-color: #f5f5f5;
+	}
 `;
 
 const Logo = styled.div`

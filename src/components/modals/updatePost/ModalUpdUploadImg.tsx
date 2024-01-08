@@ -1,5 +1,5 @@
 import { FC, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import * as S from './style';
 import { InputField } from '../../form/InputField';
 import { Input } from '../../form/Input';
@@ -12,8 +12,8 @@ import {
 } from '../../../store/service/goodsService';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { setAccessToken } from '../../../store/slices/userSlice';
-export const ModalUploadAvatar2: FC = () => {
+import { setAccessToken, setUser } from '../../../store/slices/userSlice';
+export const ModalUpdUploadImg: FC = () => {
 	const avatarRef = useRef<HTMLInputElement | null>(null);
 	const dispatch = useDispatch();
 	const token = useSelector(
@@ -36,11 +36,11 @@ export const ModalUploadAvatar2: FC = () => {
 
 		const reader = new FileReader();
 		reader.readAsDataURL(files);
-		console.log(reader);
 		updateAvatar({ credent: files, accessToken: token as string })
 			.unwrap()
-			.then((response) => {
-				console.log(response);
+			.then((response: any) => {
+				dispatch(setUser({ avatar: response.avatar }));
+				close();
 			})
 			.catch((error) => {
 				if (error.status === 401) {
@@ -53,9 +53,18 @@ export const ModalUploadAvatar2: FC = () => {
 							console.log('token upload');
 							dispatch(setAccessToken(newToken));
 							localStorage.setItem('token', newToken.access_token);
+							updateAvatar({
+								credent: files,
+								accessToken: token as string,
+							})
+								.unwrap()
+								.then((response: any) => {
+									dispatch(setUser({ avatar: response.avatar }));
+									close();
+								});
 						})
 						.catch(() => {
-							<Link to="/login"></Link>;
+							<Link href="/login"></Link>;
 						});
 				}
 			});

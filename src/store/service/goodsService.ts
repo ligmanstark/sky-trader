@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import * as T from './types/index';
+import { createQueryString } from '../../components/helpers/api';
 import { BASE_URL } from '../../utils/consts';
  
- 
-export const goodsApi = createApi({
+  export const goodsApi = createApi({
 	reducerPath: 'goodsApi',
 	tagTypes: ['Users', 'Goods'],
 	baseQuery: fetchBaseQuery({
@@ -21,12 +21,12 @@ export const goodsApi = createApi({
 			providesTags: (result) =>
 				result
 					? [
-							...result.map(({ id }) => ({
-								type: 'Goods' as const,
-								id,
-							})),
-							{ type: 'Goods', id: 'LIST' },
-]
+						...result.map(({ id }) => ({
+							type: 'Goods' as const,
+							id,
+						})),
+						{ type: 'Goods', id: 'LIST' },
+					]
 					: [{ type: 'Goods', id: 'LIST' }],
 		}),
 		getByIdGood: builder.query<T.TGoods, number>({
@@ -49,15 +49,15 @@ export const goodsApi = createApi({
 			providesTags: (result) =>
 				result
 					? [
-							...result.map(({ id }) => ({
-								type: 'Users' as const,
-								id,
-							})),
-							{ type: 'Users', id: 'LIST' },
- ]
+						...result.map(({ id }) => ({
+							type: 'Users' as const,
+							id,
+						})),
+						{ type: 'Users', id: 'LIST' },
+					]
 					: [{ type: 'Users', id: 'LIST' }],
 		}),
-		setRegisterUser: builder.mutation<T.TRegisterUser,{ body: T.TRegisterUserReq }>({
+		setRegisterUser: builder.mutation<T.TRegisterUser, { body: T.TRegisterUserReq }>({
 			query: ({ body }) => ({
 				url: '/auth/register',
 				method: 'POST',
@@ -97,7 +97,7 @@ export const goodsApi = createApi({
 				},
 			}),
 		}),
-		updateUser: builder.mutation<T.TUpdateUser,{ body: T.TUpdateUserReq; accessToken: string }>({
+		updateUser: builder.mutation<T.TUpdateUser, { body: T.TUpdateUserReq; accessToken: string }>({
 			query: ({ body, accessToken }) => ({
 				url: '/user',
 				method: 'PATCH',
@@ -108,7 +108,7 @@ export const goodsApi = createApi({
 				},
 			}),
 		}),
-		updatePassword: builder.mutation<T.TUpdatePassword,{ body: T.TUpdatePasswordReq; accessToken: string }>({
+		updatePassword: builder.mutation<T.TUpdatePassword, { body: T.TUpdatePasswordReq; accessToken: string }>({
 			query: ({ body, accessToken }) => ({
 				url: '/user/password',
 				method: 'PUT',
@@ -119,37 +119,28 @@ export const goodsApi = createApi({
 				},
 			}),
 		}),
-		updateUserAvatar: builder.mutation<T.TUpdateUser, { credent: File | null; accessToken:string} >({
-			query: ({credent,accessToken}) => {
+		updateUserAvatar: builder.mutation<T.TUpdateUser, { credent: File | null; accessToken: string }>({
+			query: ({ credent, accessToken }) => {
 				const formData = new FormData()
 				if (credent) {
-					formData.append('file',credent)
+					formData.append('file', credent)
+					console.log('then=', credent);
+				} else {
+					console.log('error=', credent);
+
 				}
 				return {
 					url: '/user/avatar/',
 					method: 'POST',
 					body: formData,
 					headers: {
-						'content-type': 'application/json',
 						Authorization: `Bearer ${accessToken}`,
 					},
 				}
 			}
 		}),
-		// updateUserAvatar: builder.mutation<object,{ body: FileReader; accessToken: string }>({
-		// 	query: ({ body, accessToken }) => ({
-		// 		url: '/user/avatar',
-		// 		method: 'POST',
-		// 		// credentials: 'include',
-		// 		body,
-		// 		headers: {
-		// 			'content-type': 'application/json',
-		// 			Authorization: `Bearer ${accessToken}`,
-		// 		},
-		// 	}),
-		// }),
-		getAllComments: builder.query<T.TComments[] | null,{id:number,accessToken:string}>({
-			query: ({id,accessToken}) => ({
+		getAllComments: builder.query<T.TComments[] | null, { id: number, accessToken: string }>({
+			query: ({ id, accessToken }) => ({
 				url: `/ads/${id}/comments`,
 				method: 'GET',
 				headers: {
@@ -159,11 +150,11 @@ export const goodsApi = createApi({
 				}
 			})
 		}),
-		postComment: builder.mutation<T.TComments, { body: string; id:number,accessToken:string}>({
-			query: ({body,id,accessToken}) => ({
+		postComment: builder.mutation<T.TComments, { body: { text: string }; id: number, accessToken: string }>({
+			query: ({ body, id, accessToken }) => ({
 				url: `/ads/${id}/comments`,
 				method: 'POST',
-				body:  body,
+				body: body,
 				headers: {
 					'content-type': 'application/json',
 					Authorization: `Bearer ${accessToken}`,
@@ -172,11 +163,105 @@ export const goodsApi = createApi({
 
 			})
 		}),
+		postAdsWithImg: builder.mutation<T.TGoods, { imgFiles: File[], fields: { title: string, description: string, price: number }, accessToken: string }>({
+			query: ({ imgFiles, fields, accessToken }) => {
+				
+				const formData = new FormData()
+				imgFiles.forEach((file: File | null) => {
+					if (file) {
+						formData.append('files', file, file.name)
+						console.log('then=', file);
+					} else {
+						console.log('error=', file);
+					}
+
+				});
+				const queryString = createQueryString(fields);
+				return {
+					url: `/ads/?${queryString}`,
+					method: 'POST',
+					body: formData,
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+ 
+					},
+				}
+			}
+		}),
+	 
+		updatePicturies: builder.mutation < T.TUpdateUser, { credent: File | null;id:number ; accessToken:string} >({
+			query: ({id,credent,accessToken}) => {
+				const formData = new FormData()
+ 
+				if (credent) {
+					formData.append('file', credent)
+					console.log('then=',credent);
+				} else {
+					console.log('error=',credent);
+
+				}
+				return {
+					url: `/ads/${id}/image`,
+					method: 'POST',
+					body: formData,
+					headers: {
+ 						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			}
+		}),
+		deletePicturies: builder.mutation < T.TUpdateUser, { file_url: string;id:number ; accessToken:string} >({
+			query: ({id,file_url,accessToken}) => {
+				const queryString = createQueryString({ file_url });
+				return {
+					url: `/ads/${id}/image?${queryString}`,
+					method: 'DELETE',
+  					headers: {
+ 						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			}
+		}),
+		 
+		postAdsWithoutImg: builder.mutation<T.TGoods, { body: { title: string, description: string, price: number}, accessToken: string }>({
+			query: ({ body, accessToken }) => {
+  				return {
+					url: '/adstext',
+					method: 'POST',
+					body: body,
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				
+				}
+			 
+			}
+		}),
+		deleteADS: builder.mutation<void, { id: number, accessToken: string }>({
+			query: ({id,accessToken}) => ({
+				url: `/ads/${id}`,
+				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			})
+		}),
+		updateADS: builder.mutation<T.TGoods, {body:{title:string,description:string,price:number}, id: number, accessToken: string }>({
+			query: ({id,body,accessToken}) => ({
+				url: `/ads/${id}`,
+				method: 'PATCH',
+				body,
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			})
+		})
 
 	}),
 });
 
 export const {
+	useUpdatePicturiesMutation,
 	useGetAllGoodsQuery,
 	useGetAllUsersQuery,
 	useSetLoginUserMutation,
@@ -192,4 +277,9 @@ export const {
 	useLazyGetUserQuery,
 	useLazyGetAllCommentsQuery,
 	usePostCommentMutation,
+	usePostAdsWithImgMutation,
+	usePostAdsWithoutImgMutation,
+	useDeleteADSMutation,
+	useUpdateADSMutation,
+	useDeletePicturiesMutation
 } = goodsApi;

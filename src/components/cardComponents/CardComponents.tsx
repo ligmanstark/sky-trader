@@ -4,23 +4,25 @@ import * as S from './style';
 import { ImageShow } from './imageShow/ImageShow';
 import { DescriptionShow } from './descriptionShow/DescriptionShow';
 import { ArticleInfo } from './articleInfo/ArticleInfo';
-import { useParams } from 'react-router-dom';
+ import { useParams } from 'next/navigation';
 import { useLazyGetByIdGoodQuery } from '../../store/service/goodsService';
 import { TGoods } from '../../store/service/types/TGoods';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 import {
 	setCurrentStateDate,
 	setCurrentIDStateDate,
 } from '../../store/slices/goodsSlice';
 export const CardComponents: FC = () => {
+const stateCurr = useSelector((state:RootState)=>state.goodsReducer.currentState)
 	const dispatch = useDispatch();
 	const [currentState, setCurrentState] = useState<TGoods>();
-	console.log(currentState);
-	const { id } = useParams();
+ 	const  id  = useParams();
 	const [fetchSearch] = useLazyGetByIdGoodQuery();
 	console.log(id);
 	useEffect(() => {
-		fetchSearch(Number(id))
+		if (typeof id !==undefined)
+		fetchSearch(Number(id?.id))
 			.unwrap()
 			.then((data) => {
 				setCurrentState(data);
@@ -28,7 +30,8 @@ export const CardComponents: FC = () => {
 				dispatch(setCurrentIDStateDate(data.id));
 			})
 			.catch((err) => alert(err));
-	}, [id]);
+	}, [dispatch, fetchSearch, id,stateCurr ]);
+
 	return (
 		<S.Wrapper>
 			<S.SubWrapper>

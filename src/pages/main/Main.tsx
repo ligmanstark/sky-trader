@@ -1,33 +1,37 @@
-'use client'
+'use client';
 import { FC } from 'react';
 import styled from '@emotion/styled';
 
 import { Container } from '../../styled/components';
-import { HelmetHead } from '../../components/HelmetHead';
-import { Search } from '../../components/search/Search';
-// import { Loader } from '../../components/plug/Loader';
-import { useDispatch, useSelector } from 'react-redux';
+ import { Search } from '../../components/search/Search';
+ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setGoods, setSearchGood } from '../../store/slices/goodsSlice';
 import {
 	useGetAllGoodsQuery,
+	useLazyGetAllGoodsQuery,
 	useLazyGetByIdGoodQuery,
 } from '../../store/service/goodsService';
 import { Logomini } from '../../assets/img/index';
- import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { GoodsList } from '../../components/goodsList/GoodsList';
 import { searchID } from '../../components/helpers/searchID';
 
+ 
 const MainPage = () => {
 	if (typeof window !== 'undefined')
-
-	return (
-		<Main/>
-	)
-}
+		return (
+			<>
+ 
+				<Main />
+ 			</>
+		);
+};
 
 const Main: FC = () => {
 	const dispatch = useDispatch();
+	const [updateFetch]=useLazyGetAllGoodsQuery()
+	const currentUser = useSelector((state:RootState)=>state.goodsReducer.currentState)
 	const { data = [], isLoading } = useGetAllGoodsQuery();
 	const searchRef = useSelector(
 		(state: RootState) => state.goodsReducer.searchRef
@@ -35,8 +39,9 @@ const Main: FC = () => {
 	const [fetchSearch] = useLazyGetByIdGoodQuery();
 
 	useEffect(() => {
+		updateFetch()
 		dispatch(setGoods(data));
-	}, [isLoading]);
+	}, [currentUser, dispatch, isLoading]);
 
 	const fetchGood = () => {
 		if (searchRef !== '') {
@@ -56,15 +61,11 @@ const Main: FC = () => {
 
 	return (
 		<>
-			<HelmetHead
-				title={`Авито на свой лад`}
-				descr={`Заработай свой первый рубль!`}
-			/>
+ 
 			<SMain>
 				<Container>
 					<SearchBox>
-						{/* <Loader /> */}
-						<div
+ 						<div
 							style={{
 								marginTop: '1rem',
 							}}
@@ -85,37 +86,35 @@ const Main: FC = () => {
 	);
 };
 
-
-
-  const SMain = styled.div`
+const SMain = styled.div`
 	background-color: #f5f5f5;
 	padding-bottom: 3.75rem;
 	position: relative;
 `;
-  const SearchBox = styled.div`
+const SearchBox = styled.div`
 	display: flex;
 	flex-direction: row;
 	gap: 1rem;
 	flex-wrap: nowrap;
 	align-items: center;
 `;
-  const TitleBlock = styled.div`
+const TitleBlock = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 `;
 
-  const TitleBlockH1 = styled.h1`
+const TitleBlockH1 = styled.h1`
 	color: black;
 	font-variant-numeric: lining-nums proportional-nums;
 	font-size: 2.5rem;
 	font-style: normal;
-	line-height: 91.5%; /* 54.9px */
+	line-height: 88px
 	letter-spacing: -0.07306rem;
 	max-width: 51rem;
-`;
+ `;
 
-  const ScrollUpBtn = styled.button`
+const ScrollUpBtn = styled.button`
 	cursor: pointer;
 	padding: 0.4375rem 1.5rem 0.5625rem 1.5rem;
 	margin: 0 auto;

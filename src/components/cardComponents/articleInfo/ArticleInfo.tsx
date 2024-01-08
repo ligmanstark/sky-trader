@@ -3,14 +3,23 @@ import * as S from './style';
 import { TGoods } from '../../../store/service/types/TGoods';
 import { Button } from '../../form/Button';
 import { BASE_URL } from '../../../utils/consts';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { MAIN_ROUTE } from '../../../utils/consts';
 import { ModalControl } from '../../modals/ModalControl';
 import { ModalComments } from '../../modals/comments/ModalComments';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { useLazyGetAllCommentsQuery } from '../../../store/service/goodsService';
+import {
+	useLazyGetAllCommentsQuery,
+	useDeleteADSMutation,
+	useLazyGetAllGoodsQuery,
+} from '../../../store/service/goodsService';
 import { setComments } from '../../../store/slices/commentsSlice';
+import { ModalUpdatePost } from '../../modals/updatePost/ModalUpdatePost';  
 export const ArticleInfo: FC<TGoods> = (props) => {
+	const router = useRouter();
+
 	const dispatch = useDispatch();
 	const token = useSelector(
 		(state: RootState) => state.userReducer.access_token
@@ -24,7 +33,10 @@ export const ArticleInfo: FC<TGoods> = (props) => {
 	const commentLength = useSelector(
 		(state: RootState) => state.commentsReducer.data
 	);
+	const currentUser = useSelector((state: RootState) => state.userReducer.id);
 	const [fetchComments] = useLazyGetAllCommentsQuery();
+	const [deleteADS] = useDeleteADSMutation();
+	const [updateGoods] = useLazyGetAllGoodsQuery();
 	const [showPhone, isShowPhone] = useState(false);
 	const { title, price, created_on, user } = props;
 
@@ -46,9 +58,19 @@ export const ArticleInfo: FC<TGoods> = (props) => {
 		.split('-')
 		.reverse()
 		.reduce((el, sum) => el + '.' + sum);
-	const newPhone = user.phone.slice(0, 7) + 'XXXXXX';
+	const newPhone = user?.phone?.slice(0, 7) + 'XXXXXX';
 	const phoneShow = () => {
 		isShowPhone((prev) => !prev);
+	};
+	const handleDelete = () => {
+		deleteADS({ accessToken: token as string, id: props.id as number })
+			.unwrap()
+			.then((res) => {
+				updateGoods();
+				setTimeout(() => {
+					router.push(MAIN_ROUTE, { scroll: false });
+				}, 1500);
+			});
 	};
 	return (
 		<S.Box>
@@ -64,26 +86,41 @@ export const ArticleInfo: FC<TGoods> = (props) => {
 			</S.H3Box>
 			<S.SellsBox>
 				<S.H1Ad>{`${price} ₽`}</S.H1Ad>
-				<S.Buttons>
-					{!showPhone ? (
-						<Button $color $border onClick={phoneShow}>
-							{`Показать телефон`}
-							<br />
-							{newPhone}
+				{currentUser === user.id ? (
+					<S.CurrentBTN>
+						<ModalControl id="change-post" modal={<ModalUpdatePost/>}>
+						<Button $color $border>
+							Редактировать объявление
 						</Button>
-					) : (
-						<Button $color $border onClick={phoneShow}>
-							{`Показать телефон`}
-							<br />
-							{user.phone}
+</ModalControl>
+						
+						<Button $color $border onClick={handleDelete}>
+							Снять с публикации
 						</Button>
-					)}
-				</S.Buttons>
+					</S.CurrentBTN>
+				) : (
+					<S.Buttons>
+						{!showPhone ? (
+							<Button $color $border onClick={phoneShow}>
+								{`Показать телефон`}
+								<br />
+								{newPhone}
+							</Button>
+						) : (
+							<Button $color $border onClick={phoneShow}>
+								{`Показать телефон`}
+								<br />
+								{user.phone}
+							</Button>
+						)}
+					</S.Buttons>
+				)}
+
 				<S.SellerBox>
 					<S.SellerImg src={`${BASE_URL}/${user.avatar}`} />
 					<S.SubSellerBox>
 						<Link
-							to={`/profile/${user.id}`}
+							href={`/profile/${user.id}`}
 							style={{
 								textDecoration: 'none',
 							}}

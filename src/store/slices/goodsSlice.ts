@@ -5,8 +5,10 @@ const initialState: T.TGoodsState = {
 	data: [],
 	searchData: [],
 	searchRef: '',
+	//@ts-ignore
 	currentState: [],
 	idCurrentState: 0,
+	imageState: [],
 };
 
 const goodsSlice = createSlice({
@@ -33,6 +35,12 @@ const goodsSlice = createSlice({
 		setCurrentIDStateDate(state, action) {
 			state.idCurrentState = action.payload;
 		},
+		AddGoods(state, action) {
+			state.data.push(action.payload);
+		},
+		setImg(state, action) {
+			state.imageState.push(action.payload);
+		},
 	},
 });
 export const {
@@ -41,6 +49,8 @@ export const {
 	setSearchGood,
 	setCurrentStateDate,
 	setCurrentIDStateDate,
+	AddGoods,
+	setImg,
 } = goodsSlice.actions;
 
 export default goodsSlice.reducer;

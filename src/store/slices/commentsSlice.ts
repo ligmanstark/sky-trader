@@ -13,7 +13,7 @@ const commentsSlice = createSlice({
 			state.data = action.payload;
 		},
 		addComments(state, action) {
-			state.data.push(action.payload);
+			state.data.unshift(action.payload);
 		},
 	},
 });

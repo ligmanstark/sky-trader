@@ -10,7 +10,7 @@ export const SellerGoods: FC = () => {
 	const goods = useSelector((state: RootState) => state.goodsReducer.data);
 	// eslint-disable-next-line
 	//@ts-ignore
-	const currentID = currentState.user.id;
+	const currentID = currentState.user?.id;
 	const sellerGoods = goods.filter((el) => currentID === el.user_id);
 	console.log(sellerGoods);
 	return (

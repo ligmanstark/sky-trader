@@ -1,4 +1,4 @@
-import { FC, useRef, MutableRefObject } from 'react';
+import { FC, useState, useRef, MutableRefObject } from 'react';
 import * as S from './style';
 import { TComments } from '../../../store/service/types/TComments';
 import { Button } from '../../form/Button';
@@ -14,8 +14,9 @@ import {
 	useSetRefreshTokenMutation,
 } from '../../../store/service/goodsService';
 import { addComments } from '../../../store/slices/commentsSlice';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 export const ModalComments: FC = () => {
+	const [check, setCheck] = useState('');
 	const textRef = useRef() as MutableRefObject<HTMLTextAreaElement>;
 	const dispatch = useDispatch();
 	const [postComment] = usePostCommentMutation();
@@ -40,27 +41,39 @@ export const ModalComments: FC = () => {
 		await postComment({
 			id: idCurrentState,
 			accessToken: accessToken as string,
-			body: textRef.current.value,
+			body: { text: textRef.current.value },
 		})
 			.unwrap()
 			.then((POST: TComments) => {
 				dispatch(addComments(POST));
 				console.log(textRef.current.value);
+				textRef.current.value = '';
 			})
-			.catch(async (error) => {
+			.catch(async (error: any) => {
 				if (error.status === 401) {
 					await putRefreshToken({
 						access_token: accessToken as string,
 						refresh_token: refreshToken as string,
 					})
 						.unwrap()
-						.then((newToken) => {
+						.then((newToken: any) => {
 							console.log('token upload');
 							dispatch(setAccessToken(newToken));
 							localStorage.setItem('token', newToken.access_token);
+							postComment({
+								id: idCurrentState,
+								accessToken: accessToken as string,
+								body: { text: textRef.current.value },
+							})
+								.unwrap()
+								.then((POST: TComments) => {
+									dispatch(addComments(POST));
+									console.log(textRef.current.value);
+									textRef.current.value = '';
+								});
 						})
 						.catch(() => {
-							<Link to="/login"></Link>;
+							<Link href="/login"></Link>;
 						});
 				}
 			});
@@ -87,10 +100,29 @@ export const ModalComments: FC = () => {
 									name="comment"
 									id="comment"
 									ref={textRef}
+									onChange={(e) => setCheck(e.target.value)}
 								></S.TextArea>
-								<Button $border onClick={handlePostComment}>
-									Опубликовать
-								</Button>
+								<>
+									{check === '' ? (
+										<Button
+											$border
+											style={{
+												background: check === '' ? '#D9D9D9' : '',
+												color: check === '' ? 'white' : '',
+											}}
+										>
+											Опубликовать
+										</Button>
+									) : (
+										<Button
+											$border
+											onClick={handlePostComment}
+											$color
+										>
+											Опубликовать
+										</Button>
+									)}
+								</>
 							</S.SubBoxContent>
 						</InputField>
 					</S.SubBox>
@@ -98,7 +130,8 @@ export const ModalComments: FC = () => {
 				<S.Content>
 					{comments
 						? comments.map((comment) => (
-								<ItemComments key={comment.id} {...comment} /> ))
+								<ItemComments key={comment.id} {...comment} />
+						  ))
 						: ''}
 				</S.Content>
 			</div>

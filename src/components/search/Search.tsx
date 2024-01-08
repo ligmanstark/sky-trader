@@ -53,11 +53,13 @@ export const Search = ({ hasError, onSubmit }: TSearch) => {
 					style={{
 						width: '80%',
 						padding: '0',
+						border: '0.1rem  solid #00000033',
+						borderRadius:'0.5rem'
 					}}
 					onChange={handleChange}
 				/>
 				{hasError && <S.Error>Отсутствуют результаты</S.Error>}
-				<Button $color onClick={handleSubmit}>
+				<Button $border $color onClick={handleSubmit}>
 					Найти
 				</Button>
 			</div>
