@@ -119,16 +119,26 @@ export const ArticleInfo: FC<TGoods> = (props) => {
 				<S.SellerBox>
 					<S.SellerImg src={`${BASE_URL}/${user.avatar}`} />
 					<S.SubSellerBox>
-						<Link
+						<>
+						{currentUser === user.id?<Link
+							href={`/profile/me`}
+							style={{
+								textDecoration: 'none',
+							}}
+ 						>
+							<S.SellerName>{user.name}</S.SellerName>
+							<S.SellerStartSells>{`Продает товары с ${startSells}`}</S.SellerStartSells>
+						</Link>:<Link
 							href={`/profile/${user.id}`}
 							style={{
 								textDecoration: 'none',
 							}}
-							// replace={true}
-						>
+ 						>
 							<S.SellerName>{user.name}</S.SellerName>
 							<S.SellerStartSells>{`Продает товары с ${startSells}`}</S.SellerStartSells>
-						</Link>
+						</Link>}
+						</>
+						
 					</S.SubSellerBox>
 				</S.SellerBox>
 			</S.SellsBox>
