@@ -4,12 +4,12 @@ import { $mainFontColor } from '../../styled/variables';
 interface Props {
 	$after?: boolean;
 	$border?: boolean;
-	$heigth?:boolean
+	$heigth?: boolean;
 }
 export const Input = styled.input<Props>`
 	width: 100%;
 	padding: 0 0 0.5rem;
-	border-radius: 0.25rem;
+	border: none;
 	border-bottom: 0.0625rem solid #d0cece;
 	color: ${$mainFontColor};
 	font-variant-numeric: lining-nums proportional-nums;
@@ -30,16 +30,16 @@ export const Input = styled.input<Props>`
 		border-bottom: 0.0625rem solid ${$mainFontColor};
 		&::placeholder {
 			color: transparent;
-			border: ${({ $border }) => ($border ? 'none' : '')};
+			border: ${({ $border }) => ($border ? 'none' : '#009ee4')};
 		}
 	}
 	&:active {
-		border: ${({ $border }) => ($border ? 'none' : '')};
+		border: ${({ $border }) => ($border ? 'none' : '#009ee4')};
 	}
 `;
 export const InputPlaceBlack = styled(Input)`
 	&::placeholder {
-		color: black;
+		color: #009ee4;
 		transition: color 0.3s;
 	}
 `;

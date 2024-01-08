@@ -102,13 +102,27 @@ export const ModalComments: FC = () => {
 									ref={textRef}
 									onChange={(e) => setCheck(e.target.value)}
 								></S.TextArea>
-								<Button
-									$border
-									onClick={handlePostComment}
-									style={{ background: check === '' ? 'grey' : '' }}
-								>
-									Опубликовать
-								</Button>
+								<>
+									{check === '' ? (
+										<Button
+											$border
+											style={{
+												background: check === '' ? '#D9D9D9' : '',
+												color: check === '' ? 'white' : '',
+											}}
+										>
+											Опубликовать
+										</Button>
+									) : (
+										<Button
+											$border
+											onClick={handlePostComment}
+											$color
+										>
+											Опубликовать
+										</Button>
+									)}
+								</>
 							</S.SubBoxContent>
 						</InputField>
 					</S.SubBox>

@@ -4,7 +4,10 @@ export const Wrapper = styled.div``;
 export const Box = styled.div``;
 export const SubBox = styled.div``;
 export const TitleBox = styled.div``;
-export const TitleH2 = styled.h2``;
+export const TitleH2 = styled.h2`
+	margin-bottom: 0.5rem;
+
+`;
 export const InputShowTitleBox = styled.div``;
 export const DescriptionBox = styled.div``;
 export const InputShowDescriptionBox = styled.div``;
@@ -21,9 +24,10 @@ export const PhotoContent = styled.div`
 export const AfterBox = styled.div`
 	display: flex;
 	align-items: center;
-	border: 1px solid black;
-	width: 15rem;
+ 	width: 15rem;
 	border-radius: 0.25rem;
+	border-radius: 0.25rem;
+	border: 0.1rem solid #00000033;
 `;
 
 export const TextArea = styled.textarea`

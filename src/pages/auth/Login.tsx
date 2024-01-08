@@ -1,6 +1,6 @@
 'use client';
 import { FC } from 'react';
-  import { InputField } from '../../components/form/InputField';
+import { InputField } from '../../components/form/InputField';
 import { Input } from '../../components/form/Input';
 import { Button } from '../../components/form/Button';
 import { useForm } from 'react-hook-form';
@@ -17,8 +17,7 @@ import {
 	useSetLoginUserMutation,
 	useLazyGetUserQuery,
 } from '../../store/service/goodsService';
-
-type TSignUp = {
+  type TSignUp = {
 	email: string;
 	password: string;
 	repeat: string;
@@ -32,7 +31,7 @@ const LoginPage = () => {
 };
 
 const Login: FC = () => {
-	const [postToken] = useSetLoginUserMutation();
+ 	const [postToken,{isError}] = useSetLoginUserMutation();
 	const [postLogin] = useLazyGetUserQuery();
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -54,6 +53,7 @@ const Login: FC = () => {
 		})
 			.unwrap()
 			.then((token: any) => {
+				console.log(token);
 				dispatch(
 					setAccessToken({
 						access_token: token.access_token,
@@ -64,8 +64,7 @@ const Login: FC = () => {
 
 				postLogin({ accessToken: token.access_token })
 					.unwrap()
-					.then((login:any) => {
- 
+					.then((login:any) => {postLogin
 						dispatch(
 							setUser({
 								email: login.email,
@@ -77,14 +76,20 @@ const Login: FC = () => {
 								avatar:login.avatar
 							})
 						);
- 					});
+						setTimeout(() => {
+							localStorage.setItem('token', getToken as string);
+				
+							router.push(MAIN_ROUTE, { scroll: false });
+						}, 1500);
+					}) 
+			}).catch((error) => {
+				if (error.status === 401) {
+					console.log(error);
+
+				}
 			});
 
-		setTimeout(() => {
-			localStorage.setItem('token', getToken as string);
-
-			router.push(MAIN_ROUTE, { scroll: false });
-		}, 1500);
+		
 	};
 
 	return (
@@ -126,16 +131,21 @@ const Login: FC = () => {
 						placeholder="Password"
 					/>
 				</InputField>
-
+				<>
+				{isError ? <>
+				<TextError>Введены неккоректные данные</TextError>
+				</>:''}
+			</>
 				<Buttons>
-					<Button type="submit" $color>
+					<Button $border style={{borderRadius:'0.5rem'}}  type="submit" $color>
 						Войти
 					</Button>
 					<Link href={'/register'}>
-						<Button type="submit">Регистрация</Button>
+						<Button $border type="submit">Зарегистрироваться</Button>
 					</Link>
 				</Buttons>
 			</Form>
+			
 		</Wrapper>
 	);
 };
@@ -173,4 +183,8 @@ const Wrapper = styled.div`
 	height: 100%;
 `;
 
+const TextError = styled.p`
+color:red;
+
+`
 export default LoginPage;

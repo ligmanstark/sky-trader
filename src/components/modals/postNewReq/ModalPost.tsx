@@ -16,14 +16,14 @@ import {
 } from '../../../store/service/goodsService';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { AddGoods,setImg } from '../../../store/slices/goodsSlice';
+import { AddGoods, setImg } from '../../../store/slices/goodsSlice';
 import { setAccessToken } from '../../../store/slices/userSlice';
 import { UploadImage } from '../../form/UploadImage';
 
 export const ModalPost: FC = () => {
-	const [updateADS]=useLazyGetAllGoodsQuery()
+	const [updateADS] = useLazyGetAllGoodsQuery();
 	const router = useRouter();
-	const [currentID,setCurrebtID]=useState(String)
+	const [currentID, setCurrebtID] = useState(String);
 	const [isImg, setIsImg] = useState(false);
 	const [name, setName] = useState('');
 	const dispatch = useDispatch();
@@ -47,7 +47,9 @@ export const ModalPost: FC = () => {
 	const { close } = useModal('post');
 
 	const [localID, setLocalID] = useState(Number);
-const currImg = useSelector((state:RootState)=>state.goodsReducer.imageState)
+	const currImg = useSelector(
+		(state: RootState) => state.goodsReducer.imageState
+	);
 	const handlePost = (e: any) => {
 		if (nameValueRef.current?.value && priceValueRef.current?.value) {
 			postADS({
@@ -60,10 +62,10 @@ const currImg = useSelector((state:RootState)=>state.goodsReducer.imageState)
 			})
 				.unwrap()
 				.then((res) => {
-					setIsImg((prev)=>!prev)
+					setIsImg((prev) => !prev);
 					dispatch(AddGoods(res));
-					setCurrebtID(res.id as string)
-					setLocalID(res.id as number)
+					setCurrebtID(res.id as string);
+					setLocalID(res.id as number);
 				})
 				.catch((error) => {
 					if (error.status === 401) {
@@ -107,19 +109,26 @@ const currImg = useSelector((state:RootState)=>state.goodsReducer.imageState)
 	const handleUpdate = async (file: File | null) => {
 		const files = file;
 		await pic({ accessToken: token as string, id: localID, credent: files })
-			.unwrap().then((res)=>dispatch(setImg(res)))
- 	};
+			.unwrap()
+			.then((res) => dispatch(setImg(res)));
+	};
 
 	const handleDelete = async (file: any) => {
-		await deletePic({ accessToken: token as string, id: localID, file_url: file })
+		await deletePic({
+			accessToken: token as string,
+			id: localID,
+			file_url: file,
+		})
 			.unwrap()
 			.then((res) => dispatch(setImg(res)));
 	};
 
 	const handleCloseModal = () => {
-		router.push('http://localhost:3000/goods/' + currentID, { scroll: false })
-		close()
-		updateADS()
+		router.push('http://localhost:3000/goods/' + currentID, {
+			scroll: false,
+		});
+		close();
+		updateADS();
 	};
 
 	return (
@@ -150,6 +159,10 @@ const currImg = useSelector((state:RootState)=>state.goodsReducer.imageState)
 								required
 								ref={nameValueRef}
 								onChange={(e) => setName(e.target.value)}
+								style={{
+									border: '0.1rem  solid #00000033',
+									borderRadius: '0.5rem',
+								}}
 							/>
 						</InputField>
 					</S.TitleBox>
@@ -178,26 +191,35 @@ const currImg = useSelector((state:RootState)=>state.goodsReducer.imageState)
 									<S.TextGrey>не более 5 фотографий</S.TextGrey>
 								</div>
 								<S.PhotoContent>
-									
- 									<UploadImage
+									<UploadImage
 										getFile={(file) => handleUpdate(file)}
-										deleteFile={() => handleDelete(currImg[0]?.images[0].url)}
+										deleteFile={() =>
+											handleDelete(currImg[0]?.images[0].url)
+										}
 									/>
 									<UploadImage
 										getFile={(file) => handleUpdate(file)}
-										deleteFile={() => handleDelete(currImg[1].images[0].url)}
+										deleteFile={() =>
+											handleDelete(currImg[1].images[0].url)
+										}
 									/>
 									<UploadImage
 										getFile={(file) => handleUpdate(file)}
-										deleteFile={() => handleDelete(currImg[2].images[0].url)}
+										deleteFile={() =>
+											handleDelete(currImg[2].images[0].url)
+										}
 									/>
 									<UploadImage
 										getFile={(file) => handleUpdate(file)}
-										deleteFile={() => handleDelete(currImg[3].images[0].url)}
+										deleteFile={() =>
+											handleDelete(currImg[3].images[0].url)
+										}
 									/>
 									<UploadImage
 										getFile={(file) => handleUpdate(file)}
-										deleteFile={() => handleDelete(currImg[4].images[0].url)}
+										deleteFile={() =>
+											handleDelete(currImg[4].images[0].url)
+										}
 									/>
 								</S.PhotoContent>
 							</S.PhotoBox>

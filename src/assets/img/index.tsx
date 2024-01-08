@@ -39,14 +39,14 @@ export const LogoPic: SvgIcon = ({ fillColor }): JSX.Element => (
 	>
 		<path
 			d="M3.87267 20.431C1.61897 21.7328 0 20.6479 0 18.7183C0 16.6642 0 10.5008 0 10.5008C0 10.5008 0 4.33736 0 2.28322C0 0.353629 1.61796 -0.731199 3.87267 0.570594C7.38278 2.59761 17.9121 8.68068 17.9121 8.68068C19.3121 9.48928 19.3121 11.5113 17.9121 12.3199C17.9121 12.3209 7.38278 18.4039 3.87267 20.431Z"
-			fill={fillColor}
+			fill="#00C1FF"
 		/>
 		<path
 			d="M15.462 20.4293C13.2083 21.7311 11.5894 20.6462 11.5894 18.7166C11.5894 16.6625 11.5894 10.4991 11.5894 10.4991C11.5894 10.4991 11.5894 4.33565 11.5894 2.28151C11.5894 0.35192 13.2073 -0.732908 15.462 0.568885C18.8948 2.55171 29.1931 8.50118 29.1931 8.50118C30.7308 9.38914 30.7308 11.609 29.1931 12.497C29.1921 12.497 18.8948 18.4464 15.462 20.4293Z"
 			fill="#BCEC30"
 		/>
 		<mask
-			id="mask0_7_405"
+			id="mask0_7_382"
 			// style="mask-type:alpha"
 			maskUnits="userSpaceOnUse"
 			x="11"
@@ -59,8 +59,8 @@ export const LogoPic: SvgIcon = ({ fillColor }): JSX.Element => (
 				fill="#6FE4FF"
 			/>
 		</mask>
-		<g mask="url(#mask0_7_405)">
-			<g filter="url(#filter0_f_7_405)">
+		<g mask="url(#mask0_7_382)">
+			<g filter="url(#filter0_f_7_382)">
 				<path
 					d="M3.87316 20.431C1.61946 21.7328 0.000488281 20.6479 0.000488281 18.7183C0.000488281 16.6642 0.000488281 10.5008 0.000488281 10.5008C0.000488281 10.5008 0.000488281 4.33736 0.000488281 2.28322C0.000488281 0.353629 1.61845 -0.731199 3.87316 0.570594C7.38327 2.59761 17.9126 8.68068 17.9126 8.68068C19.3126 9.48928 19.3126 11.5113 17.9126 12.3199C17.9126 12.3209 7.38327 18.4039 3.87316 20.431Z"
 					fill="#99D100"
@@ -93,7 +93,7 @@ export const LogoPic: SvgIcon = ({ fillColor }): JSX.Element => (
 		/>
 		<defs>
 			<filter
-				id="filter0_f_7_405"
+				id="filter0_f_7_382"
 				x="-8.92896"
 				y="-8.92774"
 				width="36.8208"
@@ -110,7 +110,7 @@ export const LogoPic: SvgIcon = ({ fillColor }): JSX.Element => (
 				/>
 				<feGaussianBlur
 					stdDeviation="4.46473"
-					result="effect1_foregroundBlur_7_405"
+					result="effect1_foregroundBlur_7_382"
 				/>
 			</filter>
 		</defs>
@@ -638,19 +638,19 @@ export const AddImage: FC = () => (
 
 export const IconAdd: FC = () => (
 	<svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-	  <path d="M15 0V30" fill="none" strokeWidth="3" />
-	  <path d="M30 15L1.10269e-06 15" fill="none" strokeWidth="3" />
+		<path d="M15 0V30" fill="none" strokeWidth="3" />
+		<path d="M30 15L1.10269e-06 15" fill="none" strokeWidth="3" />
 	</svg>
-  );
-  
-  export const IconDelete: FC = () => (
+);
+
+export const IconDelete: FC = () => (
 	<svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-	  <path
-		d="M9 7.5C9 6.70435 9.31607 5.94129 9.87868 5.37868C10.4413 4.81607 11.2044 4.5 12 4.5C12.7956 4.5 13.5587 4.81607 14.1213 5.37868C14.6839 5.94129 15 6.70435 15 7.5M9 7.5H15M9 7.5H6M15 7.5H18M6 7.5H4M6 7.5V18.5C6 19.0304 6.21071 19.5391 6.58579 19.9142C6.96086 20.2893 7.46957 20.5 8 20.5H12M18 7.5H20M18 7.5V18.5C18 19.0304 17.7893 19.5391 17.4142 19.9142"
-		fill="none"
-		strokeWidth="1.5"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-	  />
+		<path
+			d="M9 7.5C9 6.70435 9.31607 5.94129 9.87868 5.37868C10.4413 4.81607 11.2044 4.5 12 4.5C12.7956 4.5 13.5587 4.81607 14.1213 5.37868C14.6839 5.94129 15 6.70435 15 7.5M9 7.5H15M9 7.5H6M15 7.5H18M6 7.5H4M6 7.5V18.5C6 19.0304 6.21071 19.5391 6.58579 19.9142C6.96086 20.2893 7.46957 20.5 8 20.5H12M18 7.5H20M18 7.5V18.5C18 19.0304 17.7893 19.5391 17.4142 19.9142"
+			fill="none"
+			strokeWidth="1.5"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
 	</svg>
-  );
+);

@@ -65,8 +65,7 @@ const Main: FC = () => {
 			<SMain>
 				<Container>
 					<SearchBox>
-						{/* <Loader /> */}
-						<div
+ 						<div
 							style={{
 								marginTop: '1rem',
 							}}
@@ -110,10 +109,10 @@ const TitleBlockH1 = styled.h1`
 	font-variant-numeric: lining-nums proportional-nums;
 	font-size: 2.5rem;
 	font-style: normal;
-	line-height: 91.5%; /* 54.9px */
+	line-height: 88px
 	letter-spacing: -0.07306rem;
 	max-width: 51rem;
-`;
+ `;
 
 const ScrollUpBtn = styled.button`
 	cursor: pointer;

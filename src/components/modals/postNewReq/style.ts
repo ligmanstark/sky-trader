@@ -4,7 +4,9 @@ export const Wrapper = styled.div``;
 export const Box = styled.div``;
 export const SubBox = styled.div``;
 export const TitleBox = styled.div``;
-export const TitleH2 = styled.h2``;
+export const TitleH2 = styled.h2`
+	margin-bottom: 0.5rem;
+`;
 export const InputShowTitleBox = styled.div``;
 export const DescriptionBox = styled.div``;
 export const InputShowDescriptionBox = styled.div``;
@@ -24,6 +26,7 @@ export const AfterBox = styled.div`
 	border: 1px solid black;
 	width: 15rem;
 	border-radius: 0.25rem;
+	border: 0.1rem solid #00000033;
 `;
 
 export const TextArea = styled.textarea`
@@ -41,4 +44,4 @@ export const Buttons = styled.div`
 	margin-top: 2rem;
 `;
 
-export const Images = styled.div``
+export const Images = styled.div``;

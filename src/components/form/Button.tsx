@@ -14,7 +14,7 @@ export const Button = styled.button<Props>`
 	padding: 0.75rem 1rem 1rem;
 	font-family: inherit;
 	font-size: 1.25rem;
-	border-radius: 1rem;
+	border-radius: 0.5rem;
 	cursor: pointer;
 	border: ${({ $border }) =>
 		$border ? '0.0625rem solid #D0CECE' : null};

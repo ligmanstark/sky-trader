@@ -126,11 +126,15 @@ export const ModalUpdatePost: FC = () => {
 	};
 
 	const handleDelete = async (file: any) => {
-		await deletePic({ accessToken: token as string, id: IdState, file_url: file })
+		await deletePic({
+			accessToken: token as string,
+			id: IdState,
+			file_url: file,
+		})
 			.unwrap()
 			.then((res) => updateStore());
 	};
-console.log(data);
+	console.log(data);
 	return (
 		<S.Wrapper>
 			<S.Box>
@@ -160,6 +164,10 @@ console.log(data);
 								ref={nameValueRef}
 								onChange={(e) => setName(e.target.value)}
 								value={name}
+								style={{
+									border: '0.1rem  solid #00000033',
+									borderRadius: '0.5rem',
+								}}
 							/>
 						</InputField>
 					</S.TitleBox>
