@@ -194,7 +194,7 @@ export const ModalPost: FC = () => {
 									<UploadImage
 										getFile={(file) => handleUpdate(file)}
 										deleteFile={() =>
-											handleDelete(currImg[0]?.images[0].url)
+											handleDelete(currImg[0].images[0].url)
 										}
 									/>
 									<UploadImage

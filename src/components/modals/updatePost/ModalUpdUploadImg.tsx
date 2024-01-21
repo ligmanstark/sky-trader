@@ -27,7 +27,7 @@ export const ModalUpdUploadImg: FC = () => {
 	);
 
 	const { close } = useModal('uploadAvatar');
-	const [updateAvatar] = useUpdateUserAvatarMutation();
+	const [updateImage] = useUpdateUserAvatarMutation();
 	const [putRefreshToken] = useSetRefreshTokenMutation();
 
 	const handleUpload = (event: any) => {
@@ -36,7 +36,7 @@ export const ModalUpdUploadImg: FC = () => {
 
 		const reader = new FileReader();
 		reader.readAsDataURL(files);
-		updateAvatar({ credent: files, accessToken: token as string })
+		updateImage({ credent: files, accessToken: token as string })
 			.unwrap()
 			.then((response: any) => {
 				dispatch(setUser({ avatar: response.avatar }));
@@ -53,7 +53,7 @@ export const ModalUpdUploadImg: FC = () => {
 							console.log('token upload');
 							dispatch(setAccessToken(newToken));
 							localStorage.setItem('token', newToken.access_token);
-							updateAvatar({
+							updateImage({
 								credent: files,
 								accessToken: token as string,
 							})
